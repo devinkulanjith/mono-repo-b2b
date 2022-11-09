@@ -1,0 +1,9 @@
+node_modules
+react/**/__tests__/**
+react/**/__mocks__/**
+react/**/__fixtures__/**
+react/**/*.test.js
+react/**/*.test.ts
+react/**/*.test.tsx
+react/third_party/**
+coverage/

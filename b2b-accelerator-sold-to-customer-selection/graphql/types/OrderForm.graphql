@@ -1,0 +1,35 @@
+type OrderFormItem {
+  id: String
+  uniqueId: ID
+}
+
+type OrderFormSimulationData {
+  clientEmail: String
+  itemMetadata: String
+  lastFormSnapshot: String
+  poNumber: String
+  requiredDeliveryDate: String
+  shipTo: String
+  shipToCustomerNumber: String
+  shipToInfo: String
+  simulationCompletedAt: String
+  simulationData: String
+  soldTo: String
+  soldToCustomerNumber: String
+  soldToInfo: String
+  targetSystem: String
+}
+
+type OrderFormCustomApp {
+  id: String
+  fields: OrderFormSimulationData
+}
+
+type OrderFormCustomData {
+  customApps: [OrderFormCustomApp]
+}
+
+type OrderForm {
+  items: [OrderFormItem]
+  customData: OrderFormCustomData
+}

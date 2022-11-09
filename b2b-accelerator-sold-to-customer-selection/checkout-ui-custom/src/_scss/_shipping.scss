@@ -1,0 +1,32 @@
+.shipping-data {
+  display: none !important;
+}
+
+.simulation-shipping-info {
+  .accordion-toggle:before {
+    @extend %countingStepsActive;
+  }
+
+  .sold-to-account-value {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .icon-simulation-success:before {
+    content: url("https://sbdsefuat.vteximg.com.br/arquivos/icon-checkmark-sm.png");
+  }
+}
+
+.simulation-shipping-info {
+  .box-step {
+    margin-top: 10px;
+  }
+}
+
+.astrick-add::after {
+  content:"  *";
+  color: red;
+}

@@ -1,0 +1,3 @@
+[submodule "react/third_party/address-context"]
+	path = react/third_party/address-context
+	url = https://github.com/vtex-apps/address-context

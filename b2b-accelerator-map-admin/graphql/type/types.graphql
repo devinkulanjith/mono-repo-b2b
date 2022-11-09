@@ -1,0 +1,85 @@
+type Point {
+  """
+  id is used as cacheId
+  """
+  id: ID
+  pointName: String
+  phoneNumber: String
+  brand: String
+  website: String
+  address: String
+  zipcode: String
+  country: String
+  lng: Float
+  lat: Float
+  email: String
+  pointType: String
+}
+
+input InputMapPoint {
+  pointName: String
+  phoneNumber: String
+  brand: String
+  website: String
+  address: String
+  zipcode: String
+  country: String
+  lng: Float
+  lat: Float
+  email: String
+  pointType: String
+}
+
+type BrandForClient {
+  """
+  id is used as cacheId
+  """
+  id: String!
+  user: String
+  trade: String
+  targetSystem: String
+}
+
+type MapPoints {
+  """
+  documentId is used as cacheId
+  """
+  pagination: Pagination
+  Points: [Point]
+}
+
+type BrandClientResponse {
+  """
+  documentId is used as cacheId
+  """
+  pagination: Pagination
+  data: [BrandForClient]
+}
+
+type WareHouses {
+  data: [Warehouse]
+}
+
+type Warehouse {
+  warehouseId: String
+  warehouseName: String
+  totalQuantity: Int
+  reservedQuantity: Int
+}
+
+type Pagination {
+  pageSize: Int
+  page: Int
+  total: Int
+}
+
+type UmMoq {
+  id: String
+  targetSystem: String
+  minOrderQuantity: Int
+  unitMultiplier: Int
+}
+
+type DcoumentReturn {
+  DocumentId: String
+}

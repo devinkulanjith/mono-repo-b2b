@@ -1,0 +1,114 @@
+# To really understand GraphQL, go to https://graphql.org/learn/
+
+type Book {
+  authors: [String!]
+  cacheId: ID!
+  id: ID!
+  name: String
+}
+
+# It is necessary to generate input types for creating books
+# ref: http://graphql.org/graphql-js/mutations-and-input-types/
+input BookInput {
+  authors: [String!]
+  cacheId: ID
+  id: ID
+  name: String
+}
+
+type SoldToAccount {
+  cacheId: ID
+  addressNo: String! @deprecated(reason: "Use 'customerNumber instead'")
+  customerNumber: String!
+  targetSystem: String!
+  receiverName: String
+  corporateName: String
+  salesOrganizationCode: String
+  fullAddress: String
+  accountExists: Boolean
+}
+
+type PaginationInfo {
+  page: Int
+  pageSize: Int
+  total: Int
+}
+
+type SoldToAccountResponse {
+  data: [SoldToAccount]
+  pagination: PaginationInfo
+  performanceData: [KeyValue]
+}
+
+type KeyValue {
+  key: String
+  value: String
+}
+
+type Query {
+  # Cache control can only be set at root fields
+  book(id: ID!): Book
+  books(from: Int = 0, to: Int = 4): [Book]
+    @cacheControl(scope: PUBLIC, maxAge: SHORT)
+  total: Int
+
+  """
+  Returns a markdown source given an id
+  """
+  source(id: ID!): String
+
+  getTaxConfiguration: TaxConfiguration
+
+  assignedSoldToAccounts(
+    page: Int = 1
+    pageSize: Int = 5
+    sort: String
+    where: String
+  ): SoldToAccountResponse
+    @withOrderFormId
+    @withSessionToken
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  getOrderSoldToAccount(orderFormId: String): SoldToAccount
+    @withOrderFormId
+    @withSessionToken
+    @cacheControl(scope: PRIVATE)
+
+  itemMetadata(itemRefId: String!, productId: String!): ItemMetadata
+    @withOrderFormId
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+
+  orderForm(orderFormId: String): OrderForm
+    @withOrderFormId
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+
+  getAvailabilityInfo(brand: String, skuRefId: String): AvailabilityInfo
+    @withOrderFormId
+    @withSessionToken
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+}
+
+type Mutation {
+  # You should always return the whole object in a mutation, not only a boolean. This will help in browser caching
+  delete(id: String): Boolean
+  editBook(id: ID!, book: BookInput!): Book
+  newBook(book: BookInput!): Book
+  simulate(
+    sandboxResponseType: SandboxResponseType
+  ): OrderFormSimulationResponse @withOrderFormId
+  setTaxConfiguration(operation: String): OrderFormConfiguration
+  updateUnitOfMeasurement(orderFormId: String): Boolean @withOrderFormId
+
+  setOrderSoldToAccount(soldToAccount: String!, orderFormId: String): Boolean
+    @withOrderFormId
+    @withSessionToken
+    @cacheControl(scope: PRIVATE)
+
+  invalidateSimulation(orderFormId: String): OrderForm
+    @withOrderFormId
+    @cacheControl(scope: PRIVATE)
+
+  setSoldToAccount(orderFormId: String): HasMultipleSoldToAccounts
+    @withOrderFormId
+    @withSessionToken
+    @cacheControl(scope: PRIVATE)
+}

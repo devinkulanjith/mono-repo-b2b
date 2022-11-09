@@ -1,0 +1,16 @@
+mutation createMapPoint($mapPoint: InputMapPoint) {
+  createMapPoint(mapPoint: $mapPoint) {
+    id
+    pointName
+    phoneNumber
+    brand
+    website
+    address
+    zipcode
+    country
+    lng
+    lat
+    email
+    pointType
+  }
+}

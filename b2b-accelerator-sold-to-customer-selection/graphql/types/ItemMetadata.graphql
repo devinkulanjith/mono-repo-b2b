@@ -1,0 +1,6 @@
+type ItemMetadata {
+  unitOfMeasure: String
+  minimumOrderQuantity: Int
+  unitMultiplier: Int
+  customerItem: String
+}

@@ -1,0 +1,6 @@
+query ProviderLogo {
+  providerLogo @context(provider: "vtex.geolocation-graphql-interface") {
+    src
+    alt
+  }
+}

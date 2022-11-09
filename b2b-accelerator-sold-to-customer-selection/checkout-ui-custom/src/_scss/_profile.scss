@@ -1,0 +1,22 @@
+.client-profile-summary {
+  .tel, .tel-label {
+    display: none;
+  }
+}
+
+.client-profile-data {
+  .link-logout-container {
+    display: none;
+  }
+}
+
+#edit-profile-data {
+  display: none;
+}
+
+.client-phone,
+.phone-box,
+.client-new-phone,
+.other-phone {
+  display: none !important;
+}

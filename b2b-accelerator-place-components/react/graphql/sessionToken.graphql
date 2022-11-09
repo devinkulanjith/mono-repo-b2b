@@ -1,0 +1,3 @@
+query SessionToken {
+  sessionToken @context(provider: "vtex.geolocation-graphql-interface")
+}

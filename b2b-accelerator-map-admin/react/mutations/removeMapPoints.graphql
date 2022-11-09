@@ -1,0 +1,3 @@
+mutation removeMapPoint($id: String!) {
+  removePoint(id: $id)
+}

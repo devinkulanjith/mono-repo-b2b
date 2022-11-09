@@ -1,0 +1,39 @@
+type OrderFormConfiguration {
+  paymentConfiguration: PaymentConfiguration
+  taxConfiguration: TaxConfiguration
+  minimumQuantityAccumulatedForItems: Int
+  decimalDigitsPrecision: Int
+  minimumValueAccumulated: Int
+  apps: [App]
+  allowMultipleDeliveries: Boolean
+  allowManualPrice: Boolean
+  maxIntOfWhiteLabelSellers: Int
+  maskFirstPurchaseData: Boolean
+  recaptchaValidation: Boolean
+}
+
+type PaymentConfiguration {
+  requiresAuthenticationForPreAuthorizedPaymentOption: Boolean
+  allowInstallmentsMerge: Boolean
+  blockPaymentSession: Boolean
+  paymentSystemToCheckFirstInstallment: Boolean
+}
+
+type TaxConfiguration {
+  allowExecutionAfterErrors: Boolean
+  authorizationHeader: String
+  integratedAuthentication: Boolean
+  url: String
+}
+
+type App {
+  fields: [String]
+  id: [String]
+  major: Int
+}
+
+type HasMultipleSoldToAccounts {
+  hasMultipleSoldToAccounts: Boolean
+  soldToAccountSet: Boolean
+  selectedSoldTo: SoldToAccount
+}

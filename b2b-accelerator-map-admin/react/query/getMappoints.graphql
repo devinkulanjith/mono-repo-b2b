@@ -1,0 +1,22 @@
+query {
+  getMapPoints {
+    pagination {
+      pageSize
+      page
+      total
+    }
+    Points {
+      id
+      pointName
+      phoneNumber
+      brand
+      website
+      address
+      zipcode
+      country
+      lng
+      lat
+      email
+    }
+  }
+}

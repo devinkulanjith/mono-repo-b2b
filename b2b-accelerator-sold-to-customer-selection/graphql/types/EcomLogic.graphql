@@ -1,0 +1,14 @@
+type AvailabilityInfo {
+  hideButton: Boolean
+  disableButton: Int
+  quantity: Int
+  plants: [Plant]
+  targetSystem: String
+}
+
+type Plant {
+  id: String
+  plant: String
+  salesOrganizationCode: String
+  skuRefId: String
+}

@@ -1,0 +1,8 @@
+mutation InvalidateSimulation($orderFormId: String) {
+  invalidateSimulation(orderFormId: $orderFormId) @context(scope: "private") {
+    items {
+      id
+      uniqueId
+    }
+  }
+}

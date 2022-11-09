@@ -1,0 +1,15 @@
+{
+  "store/checkout-simulation.sold-to-account-selector.chooseSoldToAccount": "Please choose a sold to account from the list below.",
+  "store/checkout-simulation.sold-to-account-selector.customerNumber": "Customer No",
+  "store/checkout-simulation.sold-to-account-selector.clearAllFiltersButtonLabel": "Clear Filters",
+  "store/checkout-simulation.sold-to-account-selector.textShowRows": "Show rows",
+  "store/checkout-simulation.sold-to-account-selector.textOf": "of",
+  "store/checkout-simulation.sold-to-account-selector.selectAccount": "{available, select, true {Escolher} false {indisponível} other {indisponível}}",
+  "store/checkout-simulation.sold-to-account-selector.columnId": "ID",
+  "store/checkout-simulation.sold-to-account-selector.columnCustomerNumber": "Customer Number",
+  "store/checkout-simulation.sold-to-account-selector.sortOption_is": "is",
+  "store/checkout-simulation.sold-to-account-selector.sortOption_contains": "contains",
+  "store/checkout-simulation.sold-to-account-list-wrapper.SelectSoldTo": "Select Sold to",
+  "store/checkout-simulation.sold-to-account-list-provider.loading": "Loading...",
+  "store/checkout-simulation.sold-to-account-list-provider.fetchError": "An error occurred while fetching sold to accounts!"
+}

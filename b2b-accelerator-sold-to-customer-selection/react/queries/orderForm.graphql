@@ -1,0 +1,27 @@
+query OrderForm($orderFormId: String) {
+  orderForm(orderFormId: $orderFormId) @context(scope: "private") {
+    items {
+      id
+    }
+    customData {
+      customApps {
+        fields {
+          clientEmail
+          itemMetadata
+          lastFormSnapshot
+          poNumber
+          requiredDeliveryDate
+          shipTo
+          shipToCustomerNumber
+          shipToInfo
+          simulationCompletedAt
+          simulationData
+          soldTo
+          soldToCustomerNumber
+          soldToInfo
+          targetSystem
+        }
+      }
+    }
+  }
+}

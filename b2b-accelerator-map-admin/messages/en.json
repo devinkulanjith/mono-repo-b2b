@@ -1,0 +1,9 @@
+{
+  "admin-example.navigation.label-group": "Map Data",
+  "admin-example.navigation.label-table": "Map Points",
+  "admin-example.navigation.search.kws": "test, mock, fake",
+  "admin-example.navigation.details.search.kws": "details, mock, test, hello",
+  "admin-example.navigation.table.search.kws": "table, mock, test, bye",
+  "admin-example.hello-world": "Map Point Data",
+  "admin-example.details": "Details page"
+}

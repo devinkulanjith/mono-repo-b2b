@@ -1,0 +1,64 @@
+scalar LineItem
+
+enum SandboxResponseType {
+  success
+  globalError
+  lineItemError
+  lineItemWarning
+}
+
+type SimulateItemResponse {
+  lineItemValue: Int!
+  shippingCost: Float!
+  tax: Float!
+  availableQuantity: Int
+  lineItemWarnings: [String]!
+  lineItemErrors: [String]!
+  itemLine: LineItem!
+  productRefId: String!
+  quantity: Int!
+  baseUnitOfMeasure: String!
+  itemReqDeliveryDate: String!
+}
+
+type SimulateResponse {
+  customerPO: String!
+  soldToCustomerNumber: String!
+  shipToCustomerNumber: String
+  requestedDeliveryDate: String!
+  currency: String
+  globalErrors: [String]
+  items: [SimulateItemResponse]!
+  #  SAP
+  soldToPartnerRole: String
+  shipToPartnerRole: String
+  orderDocType: String
+  salesOrganization: String
+  distributionChannel: String
+  division: String
+  poType: String
+  shipToPO: String
+  shipToReference: String
+  #  JDE
+  plant: String
+}
+
+type CustomAppField {
+  simulationData: String
+  poNumber: String
+}
+
+type CustomApp {
+  id: String!
+  major: Int
+  fields: CustomAppField
+}
+
+type CustomData {
+  customApps: [CustomApp]
+}
+
+type OrderFormSimulationResponse {
+  simulationResponse: SimulateResponse
+  customData: CustomData
+}

@@ -1,0 +1,6 @@
+mutation SetOrderSoldToAccount($soldToAccount: String!, $orderFormId: String) {
+  setOrderSoldToAccount(
+    soldToAccount: $soldToAccount
+    orderFormId: $orderFormId
+  )
+}

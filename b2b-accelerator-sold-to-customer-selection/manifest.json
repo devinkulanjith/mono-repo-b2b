@@ -1,0 +1,180 @@
+{
+  "name": "checkout-simulation",
+  "vendor": "sbdsefuat",
+  "version": "1.1.25",
+  "title": "Checkout Simulation",
+  "description": "Checkout Simulation",
+  "credentialType": "absolute",
+  "dependencies": {
+    "vtex.styleguide": "9.x",
+    "vtex.render-runtime": "7.x",
+    "vtex.css-handles": "1.x",
+    "vtex.catalog-api-proxy": "0.x",
+    "vtex.graphql-server": "1.x",
+    "vtex.order-manager": "0.x",
+    "vtex.pixel-manager": "1.x"
+  },
+  "builders": {
+    "graphql": "1.x",
+    "node": "6.x",
+    "react": "3.x",
+    "store": "0.x",
+    "checkout-ui-custom": "0.x",
+    "messages": "1.x"
+  },
+  "scripts": {
+    "postreleasy": "vtex publish",
+    "prereleasy": "cd checkout-ui-custom && npm run build && cd .."
+  },
+  "supportWorkspaces": true,
+  "settingsSchema": {
+    "title": "Checkout Simulation",
+    "type": "object",
+    "properties": {
+      "currencySalesChannelMap": {
+        "title": "Currency - Trade Policy Map",
+        "description": "Enter the mapping between currencies and trade policies in the form {Currency Code 1},{Trade Policy ID 2}|{Currency Code 3},{Trade Policy ID 4}. E.g. USD,1|EUR,3",
+        "type": "string"
+      }
+    }
+  },
+  "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/checkout/pub/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercebeta.com.br",
+        "path": "/api/checkout/pub/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/dataentities/*"
+      }
+    },
+    {
+      "name": "POWER_USER_DS"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "httpstat.us",
+        "path": "*"
+      }
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    },
+    {
+      "name": "graphql-query"
+    },
+    {
+      "name": "OMSViewer"
+    },
+    {
+      "name": "Televendas"
+    },
+    {
+      "name": "SaveOrderFormConfiguration"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/checkout/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/oms/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/oms/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/oms/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/logistics/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/catalog/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/sessions/*"
+      }
+    },
+    {
+      "name": "vtex.graphql-server:resolve-graphql"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/catalog_system/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "d-api.sbdinc.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "u-api.sbdinc.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.sbdinc.com",
+        "path": "/*"
+      }
+    }
+  ],
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}

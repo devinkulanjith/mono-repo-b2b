@@ -1,0 +1,5 @@
+{
+  "sold-to-account-selector": {
+    "children": ["sold-to-account-list"]
+  }
+}

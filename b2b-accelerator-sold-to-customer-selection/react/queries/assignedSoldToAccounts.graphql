@@ -1,0 +1,31 @@
+query AssignedSoldToAccounts(
+  $page: Int
+  $pageSize: Int
+  $sort: String
+  $where: String
+) {
+  assignedSoldToAccounts(
+    page: $page
+    pageSize: $pageSize
+    sort: $sort
+    where: $where
+  ) {
+    data {
+      cacheId
+      customerNumber
+      receiverName
+      corporateName
+      fullAddress
+      accountExists
+    }
+    pagination {
+      page
+      pageSize
+      total
+    }
+    performanceData {
+      key
+      value
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "stack": "nodejs",
+  "memory": 512,
+  "ttl": 60,
+  "timeout": 2000,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "workers": 1,
+  "events": {
+    "handleOrderCreate": {
+      "sender": "vtex.orders-broadcast",
+      "topics": ["order-created"]
+    }
+  },
+  "routes": {
+    "status": {
+      "path": "/_v/status/:code",
+      "public": true
+    },
+    "healthCheck": {
+      "path": "/_v/health",
+      "public": true
+    },
+    "orgAccount": {
+      "path": "/_v/private/shipping/organization-account/:id",
+      "public": true
+    },
+    "soldToAccounts": {
+      "path": "/_v/private/shipping/sold-to/:userProfileId",
+      "public": true
+    },
+    "shipToAccounts": {
+      "path": "/_v/private/shipping/ship-to/:soldTo",
+      "public": true
+    },
+    "simulate": {
+      "path": "/_v/private/simulate",
+      "public": true
+    },
+    "punchoutOrderDataValidation": {
+      "path": "/_v/private/validate-punchout-order-data",
+      "public": true
+    },
+    "validateOrderFormItems": {
+      "path": "/_v/private/validate-order-form",
+      "public": true
+    },
+    "updateItemMetadata": {
+      "path": "/_v/private/update-item-metadata",
+      "public": true
+    },
+    "removeCustomData": {
+      "path": "/_v/private/orderForm/:appId/:fieldName",
+      "public": true
+    },
+    "taxSimulation": {
+      "path": "/app/tax-provider/checkout/simulation",
+      "public": true
+    },
+    "orderInvoice": {
+      "path": "/app/tax-provider/oms/invoice",
+      "public": true
+    },
+    "setShippingInformation": {
+      "path": "/_v/private/orderForm/shipping-information",
+      "public": true
+    }
+  }
+}

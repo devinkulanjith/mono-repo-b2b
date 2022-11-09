@@ -1,0 +1,12 @@
+.inforWindowPhoneIcon,
+.inforWindowAddressIcon,
+.inforWindowEmailIcon {
+  height: fit-content;
+}
+
+.inforWindowPhoneNumber,
+.inforWindowAddress,
+.inforWindowEmail {
+  margin: 0 0 0 1rem;
+  line-height: 20px;
+}

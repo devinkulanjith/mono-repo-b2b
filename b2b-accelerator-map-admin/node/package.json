@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "apollo-datasource-rest": "^0.13.0",
+    "apollo-server-errors": "^2.5.0",
+    "axios": "^0.21.1",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.25",
+    "@types/node": "^12.0.0",
+    "@types/ramda": "types/npm-ramda#dist",
+    "@vtex/api": "6.45.6",
+    "tslint": "^5.12.0",
+    "tslint-config-vtex": "^2.1.0",
+    "typescript": "3.9.7",
+    "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.142.2/public/@types/vtex.store-graphql",
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.140.1/public/@types/vtex.styleguide"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit && tslint -c tslint.json './**/*.ts'"
+  },
+  "version": "0.2.1"
+}

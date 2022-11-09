@@ -1,0 +1,21 @@
+.simulation-wrapper .accordion-toggle:before {
+  @extend %countingStepsActive;
+}
+
+.mock-simulation-wrapper {
+  margin-top: 1rem;
+}
+
+.simulation-wrapper {
+  .box-step {
+    margin-top: 10px;
+  }
+
+  .simulation-note {
+    margin-bottom: 1rem;
+  }
+
+  .simulation-error-container {
+    margin-top: 1rem;
+  }
+}

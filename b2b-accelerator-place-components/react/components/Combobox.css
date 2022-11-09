@@ -1,0 +1,11 @@
+:root {
+  --reach-combobox: 1;
+}
+
+.option:not([aria-selected="true"]).option:not(:hover) {
+  background-color: transparent;
+}
+
+.popover {
+  box-shadow: 0px 1px 16px rgba(46, 46, 46, 0.12);
+}

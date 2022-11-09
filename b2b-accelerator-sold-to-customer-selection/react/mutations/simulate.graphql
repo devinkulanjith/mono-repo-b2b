@@ -1,0 +1,22 @@
+mutation Simulate($sandboxResponseType: SandboxResponseType) {
+  simulate(sandboxResponseType: $sandboxResponseType) {
+    simulationResponse {
+      globalErrors
+      items {
+        itemLine
+        lineItemWarnings
+        lineItemErrors
+      }
+    }
+    customData {
+      customApps {
+        id
+        major
+        fields {
+          lineItemData
+          poNumber
+        }
+      }
+    }
+  }
+}

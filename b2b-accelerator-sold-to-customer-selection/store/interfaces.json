@@ -1,0 +1,13 @@
+{
+  "sold-to-account-selector": {
+    "component": "SoldToAccountListWrapper",
+    "composition": "children",
+    "allowed": "*"
+  },
+  "sold-to-account-list": {
+    "component": "SoldToAccountSelector"
+  },
+  "sold-to-anonymous-handle": {
+    "component": "AnonymousHandle"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "extends": "vtex-react/io",
+  "rules": {
+    "react/prefer-stateless-function": 0
+  }
+}
