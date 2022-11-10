@@ -23,3 +23,4 @@ export const parseTimeRemaining = (totalSeconds: number): TimeSplit => {
     seconds: fillWithZero(2, seconds),
   }
 }
+
