@@ -1,5 +1,15 @@
 import subprocess
+import os
+import re
+from time import sleep
 
+branchName = os.getenv('BRANCH_NAME')
+modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
+
+linkCommand = f'echo "yes" | vtex use {modifiedBranchName+"prod"} -P'
+subprocess.Popen( linkCommand, stdout= True, shell=True)
+
+sleep(5)
 
 cmd = "git diff --name-only HEAD^ HEAD > temp.txt"
 changedAppList = []
@@ -32,6 +42,12 @@ p2.wait()
 
 for changeApp in changedAppList:
     if changeApp in blockLevelChangedAppList:
+        subprocess.Popen( "vtex publish --force", stdout= True, shell=True)
+        sleep(480)
+        subprocess.Popen( "vtex install", stdout= True, shell=True)
         print("special deployment with 7 minute waiting goes there for app", changeApp)
     else:
+        subprocess.Popen( "vtex publish --force", stdout= True, shell=True)
+        sleep(10)
+        subprocess.Popen( "vtex install", stdout= True, shell=True)
         print("normal deplyment goes here for the app", changeApp)
