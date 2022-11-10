@@ -9,5 +9,8 @@
   },
   "sold-to-anonymous-handle": {
     "component": "AnonymousHandle"
+  },
+  "sold-to-anonymous-handle-2": {
+    "component": "AnonymousHandle"
   }
 }

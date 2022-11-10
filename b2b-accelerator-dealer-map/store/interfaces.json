@@ -1,5 +1,8 @@
 {
   "dealer-map": {
     "component": "MapLayout"
+  },
+  "dealer-map-2": {
+    "component": "MapLayout"
   }
 }
