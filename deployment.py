@@ -3,6 +3,7 @@ import os
 import re
 from time import sleep
 
+currentDirectory = os.getcwd()
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
 
@@ -42,11 +43,15 @@ p2.wait()
 
 for changeApp in changedAppList:
     if changeApp in blockLevelChangedAppList:
+        os.chdir(currentDirectory + '/' + changeApp)
+        sleep(5)
         subprocess.Popen( "vtex publish --force", stdout= True, shell=True)
         sleep(480)
         subprocess.Popen( "vtex install", stdout= True, shell=True)
         print("special deployment with 7 minute waiting goes there for app", changeApp)
     else:
+        os.chdir(currentDirectory + '/' + changeApp)
+        sleep(5)
         subprocess.Popen( "vtex publish --force", stdout= True, shell=True)
         sleep(10)
         subprocess.Popen( "vtex install", stdout= True, shell=True)
