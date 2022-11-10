@@ -1,0 +1,20 @@
+name: deployment actions
+'on':
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+jobs:
+  app-deployments:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: app deployments
+        run: python3 deployment.py
+        shell: bash
