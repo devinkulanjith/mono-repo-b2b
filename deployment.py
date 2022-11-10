@@ -58,5 +58,5 @@ for changeApp in changedAppList:
         p5 = subprocess.Popen( "echo 'yes' | vtex publish --force", stdout= True, shell=True)
         p5.wait()
         sleep(10)
-        subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
-        p5.wait()
+        p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
+        p6.wait()
