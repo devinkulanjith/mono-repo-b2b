@@ -4,8 +4,13 @@ from time import sleep
 from multiprocessing import Process
 from signal import SIGKILL
 from os import kill
+import re
 
-subprocess.Popen("vtex use testautomation", shell=True)
+branchName = os.getenv('BRANCH_NAME')
+modifiedBranchName = re.sub("[!@#$%^&*()[]{};:,./<>?\|`~-=_+]", '', branchName)
+
+linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
+subprocess.Popen( linkCommand, shell=True)
 sleep(5)
 
 currentDirectory = os.getcwd()
