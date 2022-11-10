@@ -1,0 +1,43 @@
+name: Apps Link
+'on':
+  pull_request:
+    branches:
+      - master
+jobs:
+  AppLink:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+          github_token: ${{ secrets.HUB_TOKEN }}
+      - run: |
+          git config --global user.email "devin.gallage@clouda.io"
+          git config --global user.name "kulanjith"
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install toolbelt
+        run: |
+          yarn global add vtex
+          echo "$(yarn global bin)" >> $GITHUB_PATH
+      - uses: vtex/action-toolbelt-login@v1
+        with:
+          account: cloudab2b
+          app-key: ${{ secrets.CLOUDA_B2B_APP_KEY }}
+          app-token: ${{ secrets.CLOUDA_B2B_APP_TOKEN }}
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v34
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed" >> changeList.txt
+          done
+          python3 main.py
+
