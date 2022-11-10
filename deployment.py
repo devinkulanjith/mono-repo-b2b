@@ -55,7 +55,7 @@ for changeApp in changedAppList:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
         print("normal deplyment goes here for the app", changeApp)
-        p5 = subprocess.Popen( "(echo 'yes'; echo 'yes')| vtex publish --force", stdout= True, shell=True)
+        p5 = subprocess.Popen( "vtex publish < <(yes $'yes\nno')", stdout= True, shell=True)
         p5.wait()
         sleep(10)
         p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
