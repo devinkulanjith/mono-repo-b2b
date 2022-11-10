@@ -7,7 +7,7 @@ from os import kill
 import re
 
 branchName = os.getenv('BRANCH_NAME')
-modifiedBranchName = re.sub("[!@#$%^&*()[]{};:,./<>?\|`~-=_+]", '', branchName)
+modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
 
 linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
 subprocess.Popen( linkCommand, shell=True)
