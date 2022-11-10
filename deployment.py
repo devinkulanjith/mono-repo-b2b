@@ -6,7 +6,7 @@ from time import sleep
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
 
-linkCommand = f'echo "yes" | vtex use {modifiedBranchName+"prod"} -P'
+linkCommand = f'echo "yes" | vtex use {modifiedBranchName+"prod"} --production'
 subprocess.Popen( linkCommand, stdout= True, shell=True)
 
 sleep(5)
