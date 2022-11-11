@@ -1,7 +1,7 @@
 {
   "name": "checkout-simulation",
   "vendor": "cloudab2b",
-  "version": "1.1.30",
+  "version": "1.1.31",
   "title": "Checkout Simulation",
   "description": "Checkout Simulation",
   "credentialType": "absolute",
