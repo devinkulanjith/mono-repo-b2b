@@ -35,7 +35,7 @@ p2.wait()
 
 def appLink():
     cmd = "echo 'yes' |vtex link > output.txt"
-    subprocess.Popen(cmd, stdout= True, shell=True)
+    subprocess.Popen(cmd, stdout= False, shell=True)
 
 if len(appList) != 0:
     for app in appListOrder:
