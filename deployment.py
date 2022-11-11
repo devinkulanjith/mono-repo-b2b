@@ -46,9 +46,11 @@ for changeApp in changedAppList:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
         print("special deployment with 7 minute waiting goes there for app", changeApp)
-        p3 = subprocess.Popen( "{echo 'yes'; echo 'yes' }| vtex publish --force", stdout= True, shell=True)
+        p3 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force", stdout= True, shell=True)
         p3.wait()
         sleep(480)
+        p0 = subprocess.Popen( "echo 'yes' | vtex deploy", stdout= True, shell=True)
+        p0.wait()
         p4=subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
         p4.wait()
     else:
