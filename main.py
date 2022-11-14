@@ -62,12 +62,13 @@ with open('order.yml', 'r') as file:
         
         print('test 22', linkAppNameDict)
 
-        while len(linkAppNameDict) == 0:
+        while len(linkAppNameDict) != 0:
             for x in os.listdir("output"):
                 with open("output"/x,'r',encoding='utf-8') as file:
                     sleep(3)
                     contents = file.read()
                     print('xxx', x)
+                    linkAppNameDict.pop(x)
                     # sentence = 'App linked successfully'
                     # result = contents.find(sentence)
                     # if result != -1:
