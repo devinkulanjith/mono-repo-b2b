@@ -5,6 +5,7 @@ from multiprocessing import Process
 from signal import SIGKILL
 from os import kill
 import re
+import yaml
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -21,6 +22,10 @@ appListOrder = apps.readlines()
 vtexAppLinkOrder = []
 
 appList =  []
+
+with open('order.yml', 'r') as file:
+    prime_service = yaml.safe_load(file)
+    print("check yml file",prime_service["parent_level"]["app_list"])
 
 with open('changeList.txt', 'r', encoding='utf-8') as file:
     contents = file.read()
