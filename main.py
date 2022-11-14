@@ -24,7 +24,6 @@ vtexAppLinkOrder = []
 #contain changed app list
 appList =  []
 
-@staticmethod
 def appLink(appName):
     cmd = f"echo 'yes' |vtex link > output/{appName}.txt"
     subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
@@ -55,6 +54,7 @@ with open('order.yml', 'r') as file:
                 os.chdir(currentDirectory + '/' + app)
                 process = Process(target= appLink, args=(app))
                 process.start()
+                process.join()
                 sleep(5)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
