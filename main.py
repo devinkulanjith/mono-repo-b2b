@@ -60,7 +60,7 @@ with open('order.yml', 'r') as file:
                 linkAppNameDict[app] = process.pid
                 sleep(3)
         
-        print('test 22', linkAppNameDict)
+        print('test 222', linkAppNameDict)
         os.chdir(currentDirectory)
         subprocess.Popen("ls -all", stdout= True, shell=True)
         os.chdir(currentDirectory+"/output")
