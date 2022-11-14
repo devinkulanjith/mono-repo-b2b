@@ -55,31 +55,35 @@ with open('order.yml', 'r') as file:
                 process = Process(target= appLink, args=(app,))
                 process.start()
                 process.join()
-                sleep(3)
+                sleep(5)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
-                sleep(2)
+                sleep(3)
         
+        print('test 22', linkAppNameDict)
+        os.chdir(currentDirectory)
+        subprocess.Popen("ls -all", stdout= True, shell=True)
         os.chdir(currentDirectory+"/output")
+        subprocess.Popen("ls -all", stdout= True, shell=True)
         while len(linkAppNameDict) != 0:
             for x in os.listdir():
                 if '.txt' in x:
+                    sleep(3)
                     with open(x,'r',encoding='utf-8') as file:
-                        sleep(3)
                         contents = file.read()
                         sentence = 'App linked successfully'
                         result = contents.find(sentence)
-                        print("xxxx",x)
                         if result != -1:
-                            print(app + " app link successful ... process will be killed")
+                            print(" app link successful ... process will be killed")
                             subprocess.Popen(f'rm {x}', shell=True)
                             try:
                                 kill(linkAppNameDict[x.replace(".txt","")], SIGKILL)
-                                linkAppNameDict.pop(x.replace(".txt",""))
                             except:
                                 print("something went wrong")
 
                             
+
+           
 # if len(appList) != 0:
 #     for app in appListOrder:
 #        appName = app.replace('\n','')
