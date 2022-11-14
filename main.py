@@ -63,7 +63,7 @@ with open('order.yml', 'r') as file:
         print('test 22', linkAppNameDict)
 
         while len(linkAppNameDict) != 0:
-            for x in os.listdir("output"):
+            for x in os.listdir("/output"):
                 with open("output"/x,'r',encoding='utf-8') as file:
                     sleep(3)
                     contents = file.read()
