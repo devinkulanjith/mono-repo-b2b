@@ -51,10 +51,10 @@ with open('order.yml', 'r') as file:
         print("parent app list", parentAppList)
         for app in parentAppList:
             if app in appList:
+                print('apppppp', app)
                 os.chdir(currentDirectory + '/' + app)
                 process = Process(target= appLink, args=(app,))
                 process.start()
-                process.join()
                 sleep(5)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
@@ -74,7 +74,7 @@ with open('order.yml', 'r') as file:
                         sentence = 'App linked successfully'
                         result = contents.find(sentence)
                         if result != -1:
-                            print(" app link successful ... process will be killed")
+                            print(x, " app link successful ... process will be killed")
                             subprocess.Popen(f'rm {x}', shell=True)
                             try:
                                 kill(linkAppNameDict[x.replace(".txt","")], SIGKILL)
