@@ -71,7 +71,7 @@ with open('order.yml', 'r') as file:
                     sleep(3)
                     contents = file.read()
                     print('xxx', x)
-                    linkAppNameDict.pop(x)
+                    linkAppNameDict.pop(x.replace(".txt",""))
                     # sentence = 'App linked successfully'
                     # result = contents.find(sentence)
                     # if result != -1:
