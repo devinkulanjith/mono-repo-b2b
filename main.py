@@ -69,17 +69,18 @@ with open('order.yml', 'r') as file:
             for x in os.listdir():
                 if '.txt' in x:
                     sleep(3)
-                    with open(x,'r',encoding='utf-8') as file:
-                        contents = file.read()
-                        sentence = 'App linked successfully'
-                        result = contents.find(sentence)
-                        if result != -1:
-                            print(x, " app link successful ... process will be killed")
-                            subprocess.Popen(f'rm {x}', shell=True)
-                            try:
-                                kill(linkAppNameDict[x.replace(".txt","")], SIGKILL)
-                            except:
-                                print("something went wrong")
+                    print('ccc',x)
+                    # with open(x,'r',encoding='utf-8') as file:
+                    #     contents = file.read()
+                    #     sentence = 'App linked successfully'
+                    #     result = contents.find(sentence)
+                        # if result != -1:
+                        #     print(x, " app link successful ... process will be killed")
+                        #     subprocess.Popen(f'rm {x}', shell=True)
+                        #     try:
+                        #         kill(linkAppNameDict[x.replace(".txt","")], SIGKILL)
+                        #     except:
+                        #         print("something went wrong")
 
                             
 
