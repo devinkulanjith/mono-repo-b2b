@@ -25,7 +25,7 @@ vtexAppLinkOrder = []
 appList =  []
 
 def appLink(appName):
-    cmd = f"echo 'yes' |vtex link > output/{appName}.txt"
+    cmd = f"echo 'yes' |vtex link > {currentDirectory}/output/{appName}.txt"
     subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
 
 
@@ -63,9 +63,11 @@ with open('order.yml', 'r') as file:
         print('test 22', linkAppNameDict)
         os.chdir(currentDirectory)
         subprocess.Popen("ls -all", stdout= True, shell=True)
+        os.chdir(currentDirectory+"/output")
+        subprocess.Popen("ls -all", stdout= True, shell=True)
         while len(linkAppNameDict) != 0:
-            for x in os.listdir("output"):
-                with open("output"/x,'r',encoding='utf-8') as file:
+            for x in os.listdir():
+                with open(x,'r',encoding='utf-8') as file:
                     sleep(3)
                     contents = file.read()
                     print('xxx', x)
