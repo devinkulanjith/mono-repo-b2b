@@ -67,11 +67,12 @@ with open('order.yml', 'r') as file:
         subprocess.Popen("ls -all", stdout= True, shell=True)
         while len(linkAppNameDict) != 0:
             for x in os.listdir():
-                with open(x,'r',encoding='utf-8') as file:
-                    sleep(3)
-                    contents = file.read()
-                    print('xxx', x)
-                    linkAppNameDict.pop(x.replace(".txt",""))
+                if '.txt' in x:
+                    with open(x,'r',encoding='utf-8') as file:
+                        sleep(3)
+                        contents = file.read()
+                        print('xxx', x)
+                        linkAppNameDict.pop(x.replace(".txt",""))
                     # sentence = 'App linked successfully'
                     # result = contents.find(sentence)
                     # if result != -1:
