@@ -52,7 +52,7 @@ with open('order.yml', 'r') as file:
         for app in parentAppList:
             if app in appList:
                 os.chdir(currentDirectory + '/' + app)
-                process = Process(target= appLink, args=(app))
+                process = Process(target= appLink, args=(app,))
                 process.start()
                 process.join()
                 sleep(5)
