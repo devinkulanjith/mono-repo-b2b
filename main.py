@@ -65,6 +65,7 @@ with open('order.yml', 'r') as file:
         subprocess.Popen("ls -all", stdout= True, shell=True)
         os.chdir(currentDirectory+"/output")
         subprocess.Popen("ls -all", stdout= True, shell=True)
+        print("length", len(linkAppNameDict))
         while len(linkAppNameDict) != 0:
             for x in os.listdir():
                 if '.txt' in x:
