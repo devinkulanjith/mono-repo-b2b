@@ -58,6 +58,7 @@ with open('order.yml', 'r') as file:
                 sleep(3)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
+                sleep(2)
         
         os.chdir(currentDirectory+"/output")
         while len(linkAppNameDict) != 0:
@@ -68,6 +69,7 @@ with open('order.yml', 'r') as file:
                         contents = file.read()
                         sentence = 'App linked successfully'
                         result = contents.find(sentence)
+                        print("xxxx",x)
                         if result != -1:
                             print(app + " app link successful ... process will be killed")
                             subprocess.Popen(f'rm {x}', shell=True)
