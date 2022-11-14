@@ -42,11 +42,13 @@ with open('changeList.txt', 'r', encoding='utf-8') as file:
 p2 = subprocess.Popen("rm changeList.txt", stdout=True, shell=True)
 p2.wait()
 
+print('test',appList)
 
 with open('order.yml', 'r') as file:
     prime_service = yaml.safe_load(file)
     parentAppList = prime_service["parent_level"]["app_list"]
     if len(appList) != 0:
+        print("parent app list", parentAppList)
         for app in parentAppList:
             if app in appList:
                 os.chdir(currentDirectory + '/' + app)
@@ -54,6 +56,8 @@ with open('order.yml', 'r') as file:
                 linkAppNameDict[app] = process.pid
                 sleep(3)
         
+        print('test 22', linkAppNameDict)
+
         while len(linkAppNameDict) == 0:
             for x in os.listdir("output"):
                 with open("output"/x,'r',encoding='utf-8') as file:
