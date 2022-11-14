@@ -53,6 +53,7 @@ with open('order.yml', 'r') as file:
             if app in appList:
                 os.chdir(currentDirectory + '/' + app)
                 process = Process(target= appLink, args=(app))
+                process.start()
                 sleep(5)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
