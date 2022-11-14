@@ -24,7 +24,8 @@ vtexAppLinkOrder = []
 #contain changed app list
 appList =  []
 
-def appLink(self, appName):
+@staticmethod
+def appLink(appName):
     cmd = f"echo 'yes' |vtex link > output/{appName}.txt"
     subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
 
