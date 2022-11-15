@@ -76,11 +76,13 @@ with open('order.yml', 'r') as file:
         for app in parentAppList:
             if app in appList:
                 os.chdir(currentDirectory + '/' + app)
-                process = Process(target= appLink)
-                process.start()
+                pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
+                # process = Process(target= appLink)
+                # process.start()
+                print("executing...")
                 sleep(3)
-                processors.append(process)
-                linkAppNameDict[app] = process.pid
+                processors.append(pro)
+                linkAppNameDict[app] = pro.pid
                 sleep(2)
 
         for app in parentAppList:
