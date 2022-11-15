@@ -48,7 +48,8 @@ def watchLinkAction(appName):
                 
                 try:
                     print("pid",linkAppNameDict[appName] )
-                    kill(linkAppNameDict[appName], SIGKILL)
+                    sleep(5)
+                    kill(linkAppNameDict[appName], 0)
                 except Exception as e:
                     print("something went wrong", e)
 
