@@ -45,8 +45,9 @@ def watchLinkAction(appName):
                 var = False
                 print(appName + " app link successful ... process will be killed")
                 subprocess.Popen("rm output.txt", shell=True)
-
+                
                 try:
+                    print("pid",linkAppNameDict[appName] )
                     kill(linkAppNameDict[appName], SIGKILL)
                 except Exception as e:
                     print("something went wrong", e)
