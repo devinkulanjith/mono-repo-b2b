@@ -102,6 +102,7 @@ with open('order.yml', 'r') as file:
                             
 
 print("finisheddd")  
+print("ooooo", linkAppNameDict)
 for x in processors:
     if psutil.pid_exists(x.pid):
         print(" process exits", x.pid)
