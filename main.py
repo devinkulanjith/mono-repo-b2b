@@ -92,8 +92,8 @@ with open('order.yml', 'r') as file:
                 sleep(3)
                 processorsForLink.append(linkProcess)
 
-        for process in processors:
-            process.join()
+        # for process in processors:
+        #     process.join()
         
         for linkSubProcess in processorsForLink:
             linkSubProcess.join()

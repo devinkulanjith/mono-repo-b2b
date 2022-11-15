@@ -29,7 +29,9 @@ jobs:
       - name: install psutil
         run: pip install psutil
       - name: yarn cache clean
-        run: yarn cache clean
+        run: |
+          yarn cache clean
+          yarn install --network-concurrency 1
       - name: Install toolbelt
         run: |
           yarn global add vtex
