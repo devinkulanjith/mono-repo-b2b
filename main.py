@@ -20,16 +20,40 @@ apps = open('president_order.txt','r')
 appListOrder = apps.readlines()
 
 vtexAppLinkOrder = []
-
+processors = []
 #contain changed app list
 appList =  []
 
-def appLink(appName):
-    cmd = f"echo 'yes' |vtex link > {currentDirectory}/output/{appName}.txt"
-    subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
-
-
 linkAppNameDict = {}
+
+def appLink():
+    cmd = "echo 'yes' |vtex link > output.txt"
+    subprocess.Popen(cmd, stdout= True, shell=True)
+
+
+def watchLinkAction(appName):
+    os.chdir(currentDirectory+"/"+appName)
+    var = True
+    sleep(3)
+    while var:
+        with open('output.txt', 'r', encoding='utf-8') as file:
+            sleep(5)
+            contents = file.read()
+            sentence = 'App linked successfully'
+            result = contents.find(sentence)
+            if result != -1:
+                var = False
+                print(appName + " app link successful ... process will be killed")
+                subprocess.Popen("rm output.txt", shell=True)
+                
+                try:
+                    print("pid",linkAppNameDict[appName] )
+                    sleep(5)
+                    # kill(linkAppNameDict[appName], 0)
+                except Exception as e:
+                    print("something went wrong", e)
+
+
 
 with open('changeList.txt', 'r', encoding='utf-8') as file:
     contents = file.read()
@@ -53,35 +77,24 @@ with open('order.yml', 'r') as file:
             if app in appList:
                 print('apppppp', app)
                 os.chdir(currentDirectory + '/' + app)
-                process = Process(target= appLink, args=(app,))
+                process = Process(target= appLink)
                 process.start()
-                sleep(5)
+                sleep(3)
+                processors.append(process)
                 print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
+                sleep(2)
+
+        for app in parentAppList:
+            if app in appList:
+                linkProcess = Process(target= watchLinkAction, args=(app,))
+                linkProcess.start()
                 sleep(3)
+
+        # for p in processors:
+        #     p.join()
+ 
         
-        print('test 222', linkAppNameDict)
-        os.chdir(currentDirectory)
-        subprocess.Popen("ls -all", stdout= True, shell=True)
-        os.chdir(currentDirectory+"/output")
-        subprocess.Popen("ls -all", stdout= True, shell=True)
-        print("length", len(linkAppNameDict))
-        while len(linkAppNameDict) != 0:
-            for x in os.listdir():
-                if '.txt' in x:
-                    sleep(3)
-                    print('ccc',x)
-                    with open(x,'r',encoding='utf-8') as file:
-                        contents = file.read()
-                        sentence = 'App linked successfully'
-                        result = contents.find(sentence)
-                        if result != -1:
-                            print(x, " app link successful ... process will be killed")
-                            subprocess.Popen(f'rm {x}', shell=True)
-                            try:
-                                kill(linkAppNameDict[x.replace(".txt","")], SIGKILL)
-                            except:
-                                print("something went wrong")
 
                             
 
