@@ -6,6 +6,7 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
+import psutil
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -21,6 +22,7 @@ appListOrder = apps.readlines()
 
 vtexAppLinkOrder = []
 processors = []
+processors2 = []
 #contain changed app list
 appList =  []
 
@@ -90,15 +92,29 @@ with open('order.yml', 'r') as file:
                 linkProcess = Process(target= watchLinkAction, args=(app,))
                 linkProcess.start()
                 sleep(3)
+                processors2.append(linkProcess)
 
-        for p in processors:
-            p.join()
+        # for p in processors:
+        #     p.join()
  
         
 
                             
 
-print("finisheddd")     
+print("finisheddd")  
+print("ooooo", linkAppNameDict)
+for x in processors:
+    if psutil.pid_exists(x.pid):
+        print(" process exits", x.pid)
+    else:
+        print("process does not exist", x.pid)
+
+
+for y in processors2:
+    if psutil.pid_exists(y.pid):
+        print(" process exits", y.pid)
+    else:
+        print("process does not exist", y.pid)
 # if len(appList) != 0:
 #     for app in appListOrder:
 #        appName = app.replace('\n','')

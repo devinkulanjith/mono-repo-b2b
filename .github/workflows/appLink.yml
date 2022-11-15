@@ -26,6 +26,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Install python pyyaml
         run: pip install pyyaml
+      - name: install psutil
+        run: pip install psutil
       - name: Install toolbelt
         run: |
           yarn global add vtex
