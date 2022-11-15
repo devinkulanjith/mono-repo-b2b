@@ -85,11 +85,11 @@ with open('order.yml', 'r') as file:
                 linkAppNameDict[app] = process.pid
                 sleep(2)
 
-        # for app in parentAppList:
-        #     if app in appList:
-        #         linkProcess = Process(target= watchLinkAction, args=(app,))
-        #         linkProcess.start()
-        #         sleep(3)
+        for app in parentAppList:
+            if app in appList:
+                linkProcess = Process(target= watchLinkAction, args=(app,))
+                linkProcess.start()
+                sleep(3)
 
         for p in processors:
             p.join()
