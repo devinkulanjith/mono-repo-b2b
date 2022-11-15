@@ -53,11 +53,11 @@ def watchLinkAction(appName):
                 try:
                     # print("pid", linkAppNameDict[appName] )
                     sleep(5)
-                    print("Before killing process: ", linkAppNameDict[appName])
+                    print("Before killing process: ", linkAppNameDict[appName].pid)
                     # os.kill(os.getppid(pro.pid), signal.SIGTERM)
-                    p = psutil.Process(pid)
-                    p.kill()
-                    print("After killing process: ", linkAppNameDict[appName])
+                    
+                    linkAppNameDict[appName].kill()
+                    print("After killing process: ", linkAppNameDict[appName].pid)
                     # kill(linkAppNameDict[appName], 0)
                 except Exception as e:
                     print("something went wrong", e)
@@ -91,7 +91,7 @@ with open('order.yml', 'r') as file:
                 print("executing...", pro.pid)
                 sleep(3)
                 processors.append(pro)
-                linkAppNameDict[app] = pro.pid
+                linkAppNameDict[app] = pro
                 sleep(2)
 
         print("All processes", linkAppNameDict)
@@ -112,7 +112,7 @@ with open('order.yml', 'r') as file:
  
         
 print("finisheddd")  
-print("ooooo", linkAppNameDict)
+# print("ooooo", linkAppNameDict)
 for x in processors:
     if psutil.pid_exists(x.pid):
         print(" process exits", x.pid)

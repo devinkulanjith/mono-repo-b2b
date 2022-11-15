@@ -89,6 +89,8 @@ const MapLayout = ({
     [getMapPoints]
   )
 
+  console.log('mono-repo-test')
+
   useEffect(() => {
     if (navigator.geolocation && currentLat === 0 && currentLng === 0) {
       navigator.geolocation.getCurrentPosition((position) => {
