@@ -28,7 +28,7 @@ linkAppNameDict = {}
 
 def appLink():
     cmd = "echo 'yes' |vtex link > output.txt"
-    subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.Popen(cmd, stdout= True, shell=True)
 
 
 def watchLinkAction(appName):
@@ -52,7 +52,6 @@ def watchLinkAction(appName):
                     # kill(linkAppNameDict[appName], 0)
                 except Exception as e:
                     print("something went wrong", e)
-
 
 
 
