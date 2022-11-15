@@ -54,7 +54,9 @@ def watchLinkAction(appName):
                     # print("pid", linkAppNameDict[appName] )
                     sleep(5)
                     print("Before killing process: ", linkAppNameDict[appName])
-                    os.killpg(os.getpgid(pro.pid), signal.SIGTERM)
+                    # os.kill(os.getppid(pro.pid), signal.SIGTERM)
+                    p = psutil.Process(pid)
+                    p.kill()
                     print("After killing process: ", linkAppNameDict[appName])
                     # kill(linkAppNameDict[appName], 0)
                 except Exception as e:
