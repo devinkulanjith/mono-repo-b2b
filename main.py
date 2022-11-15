@@ -91,14 +91,14 @@ with open('order.yml', 'r') as file:
                 linkProcess.start()
                 sleep(3)
 
-        # for p in processors:
-        #     p.join()
+        for p in processors:
+            p.join()
  
         
 
                             
 
-           
+print("finisheddd")      
 # if len(appList) != 0:
 #     for app in appListOrder:
 #        appName = app.replace('\n','')
