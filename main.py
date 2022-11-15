@@ -97,7 +97,6 @@ with open('order.yml', 'r') as file:
             linkSubProcess.join()
  
         
-
 print("finisheddd")  
 print("ooooo", linkAppNameDict)
 for x in processors:
