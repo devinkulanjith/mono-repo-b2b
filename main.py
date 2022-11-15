@@ -79,7 +79,6 @@ with open('order.yml', 'r') as file:
                 os.chdir(currentDirectory + '/' + app)
                 process = Process(target= appLink)
                 process.start()
-                process.join()
                 sleep(3)
                 processors.append(process)
                 print("pid checking", process.pid)
