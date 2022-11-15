@@ -86,7 +86,7 @@ with open('order.yml', 'r') as file:
                 pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
                 # process = Process(target= appLink)
                 # process.start()
-                print("executing..." + pro.pid)
+                print("executing...", pro.pid)
                 sleep(3)
                 processors.append(pro)
                 linkAppNameDict[app] = pro.pid
