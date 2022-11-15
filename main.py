@@ -22,7 +22,7 @@ appListOrder = apps.readlines()
 
 vtexAppLinkOrder = []
 processors = []
-processors2 = []
+processorsForLink = []
 #contain changed app list
 appList =  []
 
@@ -30,7 +30,7 @@ linkAppNameDict = {}
 
 def appLink():
     cmd = "echo 'yes' |vtex link > output.txt"
-    subprocess.Popen(cmd, stdout= True, shell=True)
+    subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
 
 
 def watchLinkAction(appName):
@@ -47,7 +47,6 @@ def watchLinkAction(appName):
                 var = False
                 print(appName + " app link successful ... process will be killed")
                 subprocess.Popen("rm output.txt", shell=True)
-                
                 try:
                     print("pid",linkAppNameDict[appName] )
                     sleep(5)
@@ -74,16 +73,13 @@ with open('order.yml', 'r') as file:
     prime_service = yaml.safe_load(file)
     parentAppList = prime_service["parent_level"]["app_list"]
     if len(appList) != 0:
-        print("parent app list", parentAppList)
         for app in parentAppList:
             if app in appList:
-                print('apppppp', app)
                 os.chdir(currentDirectory + '/' + app)
                 process = Process(target= appLink)
                 process.start()
                 sleep(3)
                 processors.append(process)
-                print("pid checking", process.pid)
                 linkAppNameDict[app] = process.pid
                 sleep(2)
 
@@ -92,13 +88,13 @@ with open('order.yml', 'r') as file:
                 linkProcess = Process(target= watchLinkAction, args=(app,))
                 linkProcess.start()
                 sleep(3)
-                processors2.append(linkProcess)
+                processorsForLink.append(linkProcess)
 
-        for p in processors:
-            p.join()
+        for process in processors:
+            process.join()
         
-        for pp in processors2:
-            pp.join()
+        for linkSubProcess in processorsForLink:
+            linkSubProcess.join()
  
         
 
@@ -111,7 +107,7 @@ for x in processors:
         print("process does not exist", x.pid)
 
 
-for y in processors2:
+for y in processorsForLink:
     if psutil.pid_exists(y.pid):
         print(" process exits", y.pid)
     else:
