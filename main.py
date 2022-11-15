@@ -98,7 +98,8 @@ with open('order.yml', 'r') as file:
 
                             
 
-print("finisheddd")      
+print("finisheddd")     
+ 
 # if len(appList) != 0:
 #     for app in appListOrder:
 #        appName = app.replace('\n','')
