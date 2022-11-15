@@ -102,8 +102,6 @@ with open('order.yml', 'r') as file:
  
         
 
-                            
-
 print("finisheddd")  
 print("ooooo", linkAppNameDict)
 for x in processors:
