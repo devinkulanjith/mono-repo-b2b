@@ -48,8 +48,8 @@ def watchLinkAction(appName):
 
                 try:
                     kill(linkAppNameDict[appName], SIGKILL)
-                except:
-                    print("something went wrong")
+                except Exception as e:
+                    print("something went wrong", e)
 
 
 

@@ -105,4 +105,6 @@ const AddMapPoint = () => {
   )
 }
 
+
+
 export default AddMapPoint
