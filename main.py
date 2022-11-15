@@ -59,7 +59,7 @@ def watchLinkAction(appName):
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
             
             print("+++ Matched result for: ", appName, " result: ", result)
-            print("+++ Content", contents)
+            print("+++ Content or app: ", appName, " ===> ", contents)
            
             # If log file contains link success message
             if result != -1:
@@ -125,7 +125,7 @@ with open('order.yml', 'r') as file:
 
                 sleep(3)
 
-        print("+++ All sub processes: ", linkAppNameDict.keys)
+        print("+++ All sub processes: ", linkAppNameDict.keys())
 
         # Create new processes to listen vtex link output logs
         for app in parentAppList:
