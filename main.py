@@ -30,7 +30,7 @@ linkAppNameDict = {}
 
 def appLink():
     cmd = "echo 'yes' |vtex link > output.txt"
-    subprocess.Popen(cmd, stdout= False, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.Popen(cmd, stdout= True, shell=True)
 
 
 def watchLinkAction(appName):
@@ -105,7 +105,6 @@ for x in processors:
         print(" process exits", x.pid)
     else:
         print("process does not exist", x.pid)
-
 
 for y in processorsForLink:
     if psutil.pid_exists(y.pid):
