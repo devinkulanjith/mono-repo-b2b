@@ -46,6 +46,7 @@ def watchLinkAction(appName):
             sentence = 'App linked successfully'
             result = contents.find(sentence)
             print("Result for file ", currentDirectory+"/"+appName, " Result : ", result)
+            print("+++ ", contents)
             if result != -1:
                 var = False
                 print(appName + " app link successful ... process will be killed")
@@ -94,7 +95,7 @@ with open('order.yml', 'r') as file:
                 linkAppNameDict[app] = pro
                 sleep(2)
 
-        print("All processes", linkAppNameDict)
+        print("All processes", linkAppNameDict.keys)
 
         for app in parentAppList:
             if app in appList:
