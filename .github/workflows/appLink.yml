@@ -30,8 +30,6 @@ jobs:
         run: pip install psutil
       - name: yarn cache clean
         run: yarn cache clean
-      - name: rm -rf node_modules/
-        run: rm -rf node_modules/
       - name: Install toolbelt
         run: |
           yarn global add vtex
