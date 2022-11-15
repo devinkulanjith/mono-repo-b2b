@@ -190,3 +190,4 @@ const LocationInput: React.FC<Props> = ({
 }
 
 export default LocationInput
+
