@@ -91,8 +91,8 @@ with open('order.yml', 'r') as file:
                 linkProcess.start()
                 sleep(3)
 
-        for p in processors:
-            p.join()
+        # for p in processors:
+        #     p.join()
  
         
 
