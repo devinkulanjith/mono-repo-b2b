@@ -28,6 +28,8 @@ jobs:
         run: pip install pyyaml
       - name: install psutil
         run: pip install psutil
+      - name: install yarn
+        run: npm install --global yarn
       - name: yarn cache clean
         run: yarn cache clean
       - name: Install toolbelt
