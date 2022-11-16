@@ -55,12 +55,13 @@ def watchLinkAction(appName):
             LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-            
-            print("+++ Matched result for: ", appName, " result: ", result)
-            print("+++ Content or app: ", appName, " ===> ", contents)
+        
            
             # If log file contains link success message
             if result != -1:
+                
+                print("+++ Matched result for: ", appName, " result: ", result)
+                print("+++ Content or app: ", appName, " ===> ", contents)
                 var = False
                 
                 print("+++ App link successful", appName)
@@ -75,7 +76,7 @@ def watchLinkAction(appName):
 
                     # Remove output.txt file
                     subprocess.Popen("rm output.txt", shell=True)
-
+                    linkAppNameDict.pop(appName)
                     print("+++ Output file removed ")
                 except Exception as e:
                     print("--- something went wrong", e)
