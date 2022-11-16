@@ -127,7 +127,7 @@ def ApplinkProcess(appListForLink):
             print("+++ Process started: ", pro.pid)
 
             # Keep subprocess for future use
-            linkAppNameDict[app] = pro
+            linkAppNameDict[linkApp] = pro
 
             sleep(3)
 
