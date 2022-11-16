@@ -30,6 +30,10 @@ jobs:
         run: pip install psutil
       - name: yarn cache clean
         run: yarn cache clean
+      - name: yarn upgrade
+        run: yarn upgrade
+      - name: yarn add yarn
+        run: yarn add yarn
       - name: Install toolbelt
         run: |
           yarn global add vtex
