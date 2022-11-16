@@ -150,5 +150,3 @@ export function Map({
     </div>
   )
 }
-
-
