@@ -146,7 +146,7 @@ const LocationInput: React.FC<Props> = ({
     return null
   }
 
-  console.log('mono-repo-test')
+  // console.log('mono-repo-test')
 
   return (
     <div className="w-100">

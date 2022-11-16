@@ -6,6 +6,7 @@ import './styles.global.css'
 
 const AdminExampleDetail: FC<Props> = ({ params }) => {
   // console.log('mono-repo-test')
+
   return (
     <Layout
       pageHeader={
