@@ -34,6 +34,9 @@ appList =  []
 #link process failed apps
 linkFailedApps = []
 
+#re start app link process with this variable
+recoveryMode = False
+
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
     # Go to working directory
@@ -69,6 +72,7 @@ def watchLinkAction(appName):
                     linkAppNameDict[appName].kill()
                     subprocess.Popen("rm output.txt", shell=True)
                     linkFailedApps.append(appName)
+                    del linkAppNameDict[appName]
                 except Exception as e:
                     print("Something went wrong in error handling")
 
@@ -85,6 +89,10 @@ def watchLinkAction(appName):
                     
                     # Kill file linking subprocess
                     linkAppNameDict[appName].kill()
+                    del linkAppNameDict[appName]
+                    #remove the app name from failed apps array if the process runs in for recovery mode
+                    if recoveryMode:
+                        linkFailedApps.remove(appName)
 
                     print("+++ After killing process: ", linkAppNameDict[appName].pid)
 
@@ -157,6 +165,13 @@ with open('order.yml', 'r') as file:
     # If changed apps count > 0
     if len(appList) != 0:
         ApplinkProcess(parentAppList)
+        sleep(10)
+
+        while len(linkFailedApps) != 0:
+            recoveryMode = True
+            ApplinkProcess(linkFailedApps)
+        
+        recoveryMode = False
         # for app in parentAppList:
         #     if app in appList:
 
