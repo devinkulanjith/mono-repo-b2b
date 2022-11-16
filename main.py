@@ -6,8 +6,6 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
-import psutil
-import signal
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -77,7 +75,6 @@ def watchLinkAction(appName):
 
                     # Remove output.txt file
                     subprocess.Popen("rm output.txt", shell=True)
-                    p2.wait()
 
                     print("+++ Output file removed ")
                 except Exception as e:
