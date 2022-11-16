@@ -26,8 +26,6 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Install python pyyaml
         run: pip install pyyaml
-      - name: install psutil
-        run: pip install psutil
       - name: install yarn
         run: npm install --global yarn
       - name: yarn cache clean
