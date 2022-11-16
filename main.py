@@ -117,8 +117,8 @@ def ApplinkProcess(appListForLink):
         if linkApp in appList:
 
             # go to current directory
-            os.chdir(currentDirectory + '/' + app)
-            print("+++ Working directory ", currentDirectory + '/' + app)
+            os.chdir(currentDirectory + '/' + linkApp)
+            print("+++ Working directory ", currentDirectory + '/' + linkApp)
                         
             # Open sub process to link an app and write output into a log file
             pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
