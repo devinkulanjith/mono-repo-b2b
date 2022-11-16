@@ -55,12 +55,24 @@ def watchLinkAction(appName):
             LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-            
-            print("+++ Matched result for: ", appName, " result: ", result)
-            print("+++ Content or app: ", appName, " ===> ", contents)
-           
+            LINK_ERROR_SENTENCE = 'error: ErrorID'
+
+            errorResult = contents.find(LINK_ERROR_SENTENCE)
+            if errorResult != -1:
+                print("+++ Error Occured while link process: ", appName)
+                var = False
+
+                try:
+                    print("+++ Before killing process due to error: ", linkAppNameDict[appName].pid)
+                    linkAppNameDict[appName].kill()
+                    subprocess.Popen("rm output.txt", shell=True)
+                except Exception as e:
+                    print("Something went wrong in error handling")
+
             # If log file contains link success message
             if result != -1:
+                print("+++ Matched result for: ", appName, " result: ", result)
+                print("+++ Content or app: ", appName, " ===> ", contents)
                 var = False
                 
                 print("+++ App link successful", appName)
