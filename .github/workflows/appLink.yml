@@ -28,6 +28,8 @@ jobs:
         run: pip install pyyaml
       - name: install yarn
         run: npm install --global yarn
+      - name: install typescript
+        run: yarn add -g typescript
       - name: yarn cache clean
         run: |
           yarn cache clean
