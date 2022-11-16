@@ -28,7 +28,7 @@ export class Catalog extends ExternalClient {
       result = res.data.balance
     }
 
-    // console.log("ress : ", res)
+    console.log("ress : ", res)
     return result
   }
 }

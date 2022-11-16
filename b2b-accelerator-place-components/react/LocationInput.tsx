@@ -146,6 +146,8 @@ const LocationInput: React.FC<Props> = ({
     return null
   }
 
+  // console.log('mono-repo-test')
+
   return (
     <div className="w-100">
       <form className={`${styles.locationInput} mb4`} onSubmit={handleSubmit}>
@@ -190,3 +192,4 @@ const LocationInput: React.FC<Props> = ({
 }
 
 export default LocationInput
+
