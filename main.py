@@ -76,7 +76,6 @@ def watchLinkAction(appName):
 
                     # Remove output.txt file
                     subprocess.Popen("rm output.txt", shell=True)
-                    linkAppNameDict.pop(appName)
                     print("+++ Output file removed ")
                 except Exception as e:
                     print("--- something went wrong", e)
@@ -102,9 +101,10 @@ with open('order.yml', 'r') as file:
     valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
     
     for key in valuesYaml:
-            
+        linkAppNameDict.clear()
+        sleep(3)
         print(f"+++ Starinting App link in {key} level")
-        sleep(10)
+        sleep(5)
         # If changed apps count > 0
         if len(appList) != 0:
             for app in valuesYaml[key]:
