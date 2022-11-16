@@ -31,7 +31,9 @@ jobs:
       - name: install yarn
         run: npm install --global yarn
       - name: yarn cache clean
-        run: yarn cache clean
+        run: |
+          yarn cache clean
+          yarn install --network-concurrency 1
       - name: Install toolbelt
         run: |
           yarn global add vtex
