@@ -25,4 +25,3 @@ interface Props {
 }
 
 export default AdminExampleDetail
-

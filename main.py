@@ -7,6 +7,7 @@ from os import kill
 import re
 import yaml
 import psutil
+import signal
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -35,6 +36,7 @@ def appLink():
 
 def watchLinkAction(appName):
     os.chdir(currentDirectory+"/"+appName)
+    print("Inside directory for read ", currentDirectory+"/"+appName)
     var = True
     sleep(3)
     while var:
@@ -43,14 +45,18 @@ def watchLinkAction(appName):
             contents = file.read()
             sentence = 'App linked successfully'
             result = contents.find(sentence)
+            print("Result for file ", currentDirectory+"/"+appName, " Result : ", result)
             if result != -1:
                 var = False
                 print(appName + " app link successful ... process will be killed")
                 subprocess.Popen("rm output.txt", shell=True)
                 try:
-                    print("pid",linkAppNameDict[appName] )
+                    # print("pid", linkAppNameDict[appName] )
                     sleep(5)
-                    kill(linkAppNameDict[appName], SIGKILL)
+                    print("Before killing process: ", linkAppNameDict[appName])
+                    os.killpg(os.getpgid(pro.pid), signal.SIGTERM)
+                    print("After killing process: ", linkAppNameDict[appName])
+                    # kill(linkAppNameDict[appName], 0)
                 except Exception as e:
                     print("something went wrong", e)
 
@@ -76,14 +82,17 @@ with open('order.yml', 'r') as file:
         for app in parentAppList:
             if app in appList:
                 os.chdir(currentDirectory + '/' + app)
+                print("Inside directory ", currentDirectory + '/' + app)
                 pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
                 # process = Process(target= appLink)
                 # process.start()
-                print("executing...")
+                print("executing..." + pro.pid)
                 sleep(3)
                 processors.append(pro)
                 linkAppNameDict[app] = pro.pid
                 sleep(2)
+
+        print("All processes", linkAppNameDict)
 
         for app in parentAppList:
             if app in appList:
@@ -96,6 +105,7 @@ with open('order.yml', 'r') as file:
         #     process.join()
         
         for linkSubProcess in processorsForLink:
+            print("Joining the process ", linkSubProcess.pid)
             linkSubProcess.join()
  
         

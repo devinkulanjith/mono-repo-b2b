@@ -16,6 +16,7 @@ declare global {
     skuRefId: string
   }
 
+
   interface MapData {
     id: string
     pointName: string

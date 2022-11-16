@@ -532,3 +532,4 @@ MapLayout.schema = {
     },
   },
 }
+
