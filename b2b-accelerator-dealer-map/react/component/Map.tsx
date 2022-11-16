@@ -151,6 +151,3 @@ export function Map({
   )
 }
 
-
-
-

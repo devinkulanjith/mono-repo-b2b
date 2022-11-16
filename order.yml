@@ -1,2 +1,1 @@
-parent_level:
-  app_list: ["b2b-accelerator-consumer-store-theme", "b2b-accelerator-dealer-map", "b2b-accelerator-map-admin", "b2b-accelerator-place-components"]
+parent_level: ["b2b-accelerator-consumer-store-theme", "b2b-accelerator-dealer-map", "b2b-accelerator-map-admin", "b2b-accelerator-place-components"]
