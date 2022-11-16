@@ -31,11 +31,6 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-#link process failed apps
-linkFailedApps = []
-
-#re start app link process with this variable
-recoveryMode = False
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
@@ -60,26 +55,12 @@ def watchLinkAction(appName):
             LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-            LINK_ERROR_SENTENCE = 'error: ErrorID'
-
-            errorResult = contents.find(LINK_ERROR_SENTENCE)
-            if errorResult != -1:
-                print("+++ Error Occured while link process: ", appName)
-                var = False
-
-                try:
-                    print("+++ Before killing process due to error: ", linkAppNameDict[appName].pid)
-                    linkAppNameDict[appName].kill()
-                    subprocess.Popen("rm output.txt", shell=True)
-                    linkFailedApps.append(appName)
-                    del linkAppNameDict[appName]
-                except Exception as e:
-                    print("Something went wrong in error handling")
-
+            
+            print("+++ Matched result for: ", appName, " result: ", result)
+            print("+++ Content or app: ", appName, " ===> ", contents)
+           
             # If log file contains link success message
             if result != -1:
-                print("+++ Matched result for: ", appName, " result: ", result)
-                print("+++ Content or app: ", appName, " ===> ", contents)
                 var = False
                 
                 print("+++ App link successful", appName)
@@ -89,10 +70,6 @@ def watchLinkAction(appName):
                     
                     # Kill file linking subprocess
                     linkAppNameDict[appName].kill()
-                    del linkAppNameDict[appName]
-                    #remove the app name from failed apps array if the process runs in for recovery mode
-                    if recoveryMode:
-                        linkFailedApps.remove(appName)
 
                     print("+++ After killing process: ", linkAppNameDict[appName].pid)
 
@@ -119,44 +96,6 @@ p2.wait()
 
 print('+++ Apps with changes: ',appList)
 
-def ApplinkProcess(appListForLink):
-
-    for linkApp in appListForLink:
-        if linkApp in appList:
-
-            # go to current directory
-            os.chdir(currentDirectory + '/' + linkApp)
-            print("+++ Working directory ", currentDirectory + '/' + linkApp)
-                        
-            # Open sub process to link an app and write output into a log file
-            pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
-
-            sleep(3)
-            print("+++ Process started: ", pro.pid)
-
-            # Keep subprocess for future use
-            linkAppNameDict[linkApp] = pro
-
-            sleep(3)
-
-    print("+++ All sub processes: ", linkAppNameDict.keys())
-    # Create new processes to listen vtex link output logs
-    for app in appListForLink:
-        if app in appList:
-
-            # create a new process
-            linkProcess = Process(target= watchLinkAction, args=(app,))
-            linkProcess.start()
-            
-            sleep(3)
-            
-            # Keep opened processes for future use
-            processorsForLink.append(linkProcess)
-    
-    for linkSubProcess in processorsForLink:
-        print("+++ Joining the process ", linkSubProcess.pid)
-        linkSubProcess.join()
-
 # Get apps linking order
 with open('order.yml', 'r') as file:
     prime_service = yaml.safe_load(file)
@@ -164,52 +103,44 @@ with open('order.yml', 'r') as file:
 
     # If changed apps count > 0
     if len(appList) != 0:
-        ApplinkProcess(parentAppList)
-        sleep(10)
+        for app in parentAppList:
+            if app in appList:
 
-        while len(linkFailedApps) != 0:
-            recoveryMode = True
-            ApplinkProcess(linkFailedApps)
-        
-        recoveryMode = False
-        # for app in parentAppList:
-        #     if app in appList:
-
-        #         # go to current directory
-        #         os.chdir(currentDirectory + '/' + app)
+                # go to current directory
+                os.chdir(currentDirectory + '/' + app)
                 
-        #         print("+++ Working directory ", currentDirectory + '/' + app)
+                print("+++ Working directory ", currentDirectory + '/' + app)
                 
-        #         # Open sub process to link an app and write output into a log file
-        #         pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
+                # Open sub process to link an app and write output into a log file
+                pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
 
-        #         sleep(3)
-        #         print("+++ Process started: ", pro.pid)
+                sleep(3)
+                print("+++ Process started: ", pro.pid)
 
-        #         # Keep subprocess for future use
-        #         linkAppNameDict[app] = pro
+                # Keep subprocess for future use
+                linkAppNameDict[app] = pro
 
-        #         sleep(3)
+                sleep(3)
 
-        # print("+++ All sub processes: ", linkAppNameDict.keys())
+        print("+++ All sub processes: ", linkAppNameDict.keys())
 
-        # # Create new processes to listen vtex link output logs
-        # for app in parentAppList:
-        #     if app in appList:
+        # Create new processes to listen vtex link output logs
+        for app in parentAppList:
+            if app in appList:
 
-        #         # create a new process
-        #         linkProcess = Process(target= watchLinkAction, args=(app,))
-        #         linkProcess.start()
+                # create a new process
+                linkProcess = Process(target= watchLinkAction, args=(app,))
+                linkProcess.start()
                 
-        #         sleep(3)
+                sleep(3)
                 
-        #         # Keep opened processes for future use
-        #         processorsForLink.append(linkProcess)
+                # Keep opened processes for future use
+                processorsForLink.append(linkProcess)
 
-        # # Join previously opened processes
-        # for linkSubProcess in processorsForLink:
-        #     print("+++ Joining the process ", linkSubProcess.pid)
-        #     linkSubProcess.join()
+        # Join previously opened processes
+        for linkSubProcess in processorsForLink:
+            print("+++ Joining the process ", linkSubProcess.pid)
+            linkSubProcess.join()
  
         
 print("+++ Done linking")
