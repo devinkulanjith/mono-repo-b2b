@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -31,7 +31,9 @@ jobs:
       - name: install yarn
         run: npm install --global yarn
       - name: yarn cache clean
-        run: yarn cache clean
+        run: |
+          yarn cache clean
+          yarn install --network-concurrency 1
       - name: Install toolbelt
         run: |
           yarn global add vtex
