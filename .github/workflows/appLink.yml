@@ -19,14 +19,7 @@ jobs:
           git config --global user.email "devin.gallage@clouda.io"
           git config --global user.name "kulanjith"
           git config --global --add safe.directory /__w/mono-repo-b2b/mono-repo-b2b
-      - uses: actions/checkout@v3
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.10'
-      #     cache: 'pip'     
+      - uses: actions/checkout@v3 
       - run: pip install -r requirements.txt
       - name: Install python pyyaml
         run: pip install pyyaml
@@ -66,4 +59,3 @@ jobs:
             echo "$file was changed" >> changeList.txt
           done
           python3 main.py
-
