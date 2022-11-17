@@ -18,6 +18,7 @@ jobs:
       - run: |
           git config --global user.email "devin.gallage@clouda.io"
           git config --global user.name "kulanjith"
+          git config --global --add safe.directory /__w/mono-repo-b2b/mono-repo-b2b
       - uses: actions/checkout@v3
       # - uses: actions/setup-node@v3
       #   with:
