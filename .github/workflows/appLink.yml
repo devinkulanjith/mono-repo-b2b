@@ -22,10 +22,12 @@ jobs:
       # - uses: actions/setup-node@v3
       #   with:
       #     node-version: 16
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          cache: 'pip'
+      # - uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.10'
+      #     cache: 'pip'
+      - name : install pytrhon
+        run : apk add --no-cache python3 py3-pip
       - run: pip install -r requirements.txt
       - name: Install python pyyaml
         run: pip install pyyaml
