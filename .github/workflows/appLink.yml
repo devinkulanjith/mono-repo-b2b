@@ -28,6 +28,8 @@ jobs:
         run: pip install pyyaml
       - name: install yarn
         run: npm install --global yarn --force
+      - name: configuring yarn registry
+        run: yarn config set registry https://registry.npmjs.org
       - name: install typescript
         run: yarn global add typescript
       - name: yarn cache clean
