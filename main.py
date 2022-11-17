@@ -145,7 +145,5 @@ with open('order.yml', 'r') as file:
             for linkSubProcess in processorsForLink:
                 print("+++ Joining the process ", linkSubProcess.pid)
                 linkSubProcess.join()
- 
-        
+         
 print("+++ Done linking")
-
