@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     container: node:16-alpine
     steps:
+      - name: install git
+        run: apk add git
       - uses: actions/checkout@master
         with:
           persist-credentials: false
