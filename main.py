@@ -55,12 +55,13 @@ def watchLinkAction(appName):
             LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-            
-            print("+++ Matched result for: ", appName, " result: ", result)
-            print("+++ Content or app: ", appName, " ===> ", contents)
+        
            
             # If log file contains link success message
             if result != -1:
+                
+                print("+++ Matched result for: ", appName, " result: ", result)
+                print("+++ Content or app: ", appName, " ===> ", contents)
                 var = False
                 
                 print("+++ App link successful", appName)
@@ -75,7 +76,6 @@ def watchLinkAction(appName):
 
                     # Remove output.txt file
                     subprocess.Popen("rm output.txt", shell=True)
-
                     print("+++ Output file removed ")
                 except Exception as e:
                     print("--- something went wrong", e)
@@ -98,89 +98,52 @@ print('+++ Apps with changes: ',appList)
 
 # Get apps linking order
 with open('order.yml', 'r') as file:
-    prime_service = yaml.safe_load(file)
-    parentAppList = prime_service["parent_level"]["app_list"]
+    valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
+    
+    for key in valuesYaml:
+        linkAppNameDict.clear()
+        sleep(3)
+        print(f"+++ Starinting App link in {key} level")
+        sleep(5)
+        # If changed apps count > 0
+        if len(appList) != 0:
+            for app in valuesYaml[key]:
+                if app in appList:
 
-    # If changed apps count > 0
-    if len(appList) != 0:
-        for app in parentAppList:
-            if app in appList:
+                    # go to current directory
+                    os.chdir(currentDirectory + '/' + app)
+                    
+                    print("+++ Working directory ", currentDirectory + '/' + app)
+                    
+                    # Open sub process to link an app and write output into a log file
+                    pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
 
-                # go to current directory
-                os.chdir(currentDirectory + '/' + app)
-                
-                print("+++ Working directory ", currentDirectory + '/' + app)
-                
-                # Open sub process to link an app and write output into a log file
-                pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
+                    sleep(3)
+                    print("+++ Process started: ", pro.pid)
 
-                sleep(3)
-                print("+++ Process started: ", pro.pid)
+                    # Keep subprocess for future use
+                    linkAppNameDict[app] = pro
 
-                # Keep subprocess for future use
-                linkAppNameDict[app] = pro
+                    sleep(3)
 
-                sleep(3)
+            print("+++ All sub processes: ", linkAppNameDict.keys())
 
-        print("+++ All sub processes: ", linkAppNameDict.keys())
+            # Create new processes to listen vtex link output logs
+            for app in valuesYaml[key]:
+                if app in appList:
 
-        # Create new processes to listen vtex link output logs
-        for app in parentAppList:
-            if app in appList:
+                    # create a new process
+                    linkProcess = Process(target= watchLinkAction, args=(app,))
+                    linkProcess.start()
+                    
+                    sleep(3)
+                    
+                    # Keep opened processes for future use
+                    processorsForLink.append(linkProcess)
 
-                # create a new process
-                linkProcess = Process(target= watchLinkAction, args=(app,))
-                linkProcess.start()
-                
-                sleep(3)
-                
-                # Keep opened processes for future use
-                processorsForLink.append(linkProcess)
-
-        # Join previously opened processes
-        for linkSubProcess in processorsForLink:
-            print("+++ Joining the process ", linkSubProcess.pid)
-            linkSubProcess.join()
- 
-        
+            # Join previously opened processes
+            for linkSubProcess in processorsForLink:
+                print("+++ Joining the process ", linkSubProcess.pid)
+                linkSubProcess.join()
+         
 print("+++ Done linking")
-
-
-# print("ooooo", linkAppNameDict)
-# for x in processors:
-#     if psutil.pid_exists(x.pid):
-#         print(" process exits", x.pid)
-#     else:
-#         print("process does not exist", x.pid)
-
-# for y in processorsForLink:
-#     if psutil.pid_exists(y.pid):
-#         print(" process exits", y.pid)
-#     else:
-#         print("process does not exist", y.pid)
-# if len(appList) != 0:
-#     for app in appListOrder:
-#        appName = app.replace('\n','')
-#        if appName in appList:
-#            vtexAppLinkOrder.append(appName)
-
-#     for app in vtexAppLinkOrder:
-#         os.chdir(currentDirectory + '/' + app)
-#         process = Process(target= appLink)
-#         process.start()
-#         var = True
-#         sleep(3)
-#         while var:
-#             with open('output.txt', 'r', encoding='utf-8') as file:
-#                 sleep(5)
-#                 contents = file.read()
-#                 sentence = 'App linked successfully'
-#                 result = contents.find(sentence)
-#                 if result != -1:
-#                     var = False
-#                     print(app + " app link successful ... process will be killed")
-#                     subprocess.Popen("rm output.txt", shell=True)
-#                     try:
-#                         kill(process.pid, SIGKILL)
-#                     except:
-#                         print("something went wrong")
