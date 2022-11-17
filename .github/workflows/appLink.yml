@@ -6,6 +6,7 @@ name: Apps Link
 jobs:
   AppLink:
     runs-on: ubuntu-latest
+    container: node:16-alpine
     steps:
       - uses: actions/checkout@master
         with:
@@ -16,9 +17,9 @@ jobs:
           git config --global user.email "devin.gallage@clouda.io"
           git config --global user.name "kulanjith"
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
