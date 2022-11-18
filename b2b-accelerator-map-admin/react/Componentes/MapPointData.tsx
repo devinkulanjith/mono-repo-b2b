@@ -94,3 +94,10 @@ const MapPointData = () => {
 }
 
 export default MapPointData
+
+
+
+
+
+
+
