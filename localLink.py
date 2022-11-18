@@ -96,7 +96,7 @@ if not latestLinkComment:
 
 changed_files = []
 
-for x in commits_list[0].diff(latestLinkComment):
+for x in commits_list[0].diff("a5b2391f90336d44e8945088078e7cfb26fe256e"):
     if x.a_blob.path not in changed_files:
         changed_files.append(x.a_blob.path)
         
@@ -105,6 +105,7 @@ for x in commits_list[0].diff(latestLinkComment):
 
 ##  Get all changed apps and order them
 
+print("change file", changed_files)
 for app in appListOrder:
     appName = app.replace('\n','')
     print("app Name", appName)
