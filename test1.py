@@ -43,3 +43,5 @@ with open('commits.txt','w') as f:
     f.seek(0)
     f.write(str(commits_list[0]))
     f.close()
+
+    
