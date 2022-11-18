@@ -87,6 +87,3 @@ const NumberOption: React.FC<Props> = ({
 
 export default NumberOption
 
-
-
-

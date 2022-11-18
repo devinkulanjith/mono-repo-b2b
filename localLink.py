@@ -6,9 +6,10 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
+import git
 
-branchName = os.getenv('BRANCH_NAME')
-modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
+branchName = "monorepoappstesting"
+modifiedBranchName = re.sub('[^a-z\n\.]', '', branchName)
 
 linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
 subprocess.Popen( linkCommand, shell=True)
@@ -30,7 +31,6 @@ processorsForLink = []
 
 # Changed apps
 appList =  []
-
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
@@ -56,7 +56,6 @@ def watchLinkAction(appName):
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
         
-           
             # If log file contains link success message
             if result != -1:
                 
@@ -80,25 +79,46 @@ def watchLinkAction(appName):
                 except Exception as e:
                     print("--- something went wrong", e)
 
-
 #function for chunk the links app array
 
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
-###  Get all changed apps and order them
-with open('changeList.txt', 'r', encoding='utf-8') as file:
-    contents = file.read()
-    for app in appListOrder:
-        appName = app.replace('\n','')
-        result = contents.find(appName)
-        if result != -1:
-            appList.append(appName)
 
-# Remove changed files list
-p2 = subprocess.Popen("rm changeList.txt", stdout=True, shell=True)
-p2.wait()
+# detect chaged files between privous link attempt and this attempt
 
+repo = git.Repo(currentDirectory) 
+commits_list = list(repo.iter_commits())
+
+with open('commits.txt','r') as f:
+    latestLinkComment = f.readlines()
+    f.close()
+
+if not latestLinkComment:
+    latestLinkComment = commits_list[1]
+
+
+changed_files = []
+
+for x in commits_list[0].diff(latestLinkComment):
+    if x.a_blob:
+        if x.a_blob.path not in changed_files:
+            changed_files.append(x.a_blob.path)
+    
+    if x.b_blob:
+        if x.b_blob is not None and x.b_blob.path not in changed_files:
+            changed_files.append(x.b_blob.path)
+
+##  Get all changed apps and order them
+
+for app in appListOrder:
+    appName = app.replace('\n','')
+    r = re.compile(f".*{appName}")
+    newlist = list(filter(r.match, changed_files))
+    if len(newlist) != 0:
+        appList.append(appName)
+
+sleep(3)
 print('+++ Apps with changes: ',appList)
 
 # Get apps linking order
@@ -154,3 +174,8 @@ with open('order.yml', 'r') as file:
          
 print("+++ Done linking")
 
+# update the last commit id in the commit file
+with open('commits.txt','w') as f:
+    f.seek(0)
+    f.write(str(commits_list[0]))
+    f.close()
