@@ -96,7 +96,7 @@ if not latestLinkComment:
 
 changed_files = []
 
-for x in commits_list[0].diff(latestLinkComment):
+for x in commits_list[0].diff(commits_list[1]):
     if x.a_blob.path not in changed_files:
         changed_files.append(x.a_blob.path)
         
