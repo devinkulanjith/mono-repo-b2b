@@ -107,7 +107,7 @@ for x in commits_list[0].diff(commits_list[1]):
 
 for app in appListOrder:
     appName = app.replace('\n','')
-    print("app Name")
+    print("app Name", appName)
     if appName in changed_files:
         print("app", appName)
         appList.append(appName)
