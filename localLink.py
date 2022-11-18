@@ -32,8 +32,6 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-latestLinkComment = ''
-
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
     # Go to working directory
@@ -92,6 +90,9 @@ with open('commits.txt','r') as f:
     latestLinkComment = f.readlines()
     f.close()
 
+if not latestLinkComment:
+    latestLinkComment = commits_list[1]
+
 
 changed_files = []
 
@@ -106,8 +107,8 @@ for x in commits_list[0].diff(latestLinkComment):
 
 for app in appListOrder:
     appName = app.replace('\n','')
-    result = changed_files.find(appName)
-    if result != -1:
+
+    if appName in changed_files:
         appList.append(appName)
 
 
@@ -167,3 +168,6 @@ with open('order.yml', 'r') as file:
          
 print("+++ Done linking")
 
+with open('commits.txt','w') as f:
+    f.write(str(commits_list[0]))
+    f.close()

@@ -1,5 +1,5 @@
-linkapp:
-	python3 test1.py
+linkapp: 
+	python3 localLink.py
 
 clean:
 	rm -rf __pycache__
