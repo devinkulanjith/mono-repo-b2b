@@ -111,8 +111,8 @@ for app in appListOrder:
     print("app Name", appName)
     r = re.compile(f".*{appName}")
     newlist = list(filter(r.match, changed_files))
-    if appName in newlist:
-        print("app", appName)
+    print("new list",newlist)
+    if len(newlist) != 0:
         appList.append(appName)
 
 sleep(5)
