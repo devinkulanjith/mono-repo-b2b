@@ -79,6 +79,8 @@ def watchLinkAction(appName):
                 except Exception as e:
                     print("--- something went wrong", e)
 
+#function for chunk the links app array
+
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
