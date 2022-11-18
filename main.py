@@ -106,13 +106,13 @@ with open('order.yml', 'r') as file:
     valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
     
     for key in valuesYaml:
-        linkAppNameDict.clear()
         sleep(3)
         print(f"+++ Starinting App link in {key} level")
         sleep(5)
         # If changed apps count > 0
         if len(appList) != 0:
             for group in chunker(valuesYaml[key], 2):
+                linkAppNameDict.clear()
                 for app in group:
                     if app in appList:
 
