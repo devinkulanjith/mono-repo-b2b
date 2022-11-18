@@ -83,6 +83,8 @@ def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
 
+# detect chaged files between privous link attempt and this attempt
+
 repo = git.Repo(currentDirectory) 
 commits_list = list(repo.iter_commits())
 
@@ -105,17 +107,14 @@ for x in commits_list[0].diff(latestLinkComment):
 
 ##  Get all changed apps and order them
 
-print("change file", changed_files)
 for app in appListOrder:
     appName = app.replace('\n','')
-    print("app Name", appName)
     r = re.compile(f".*{appName}")
     newlist = list(filter(r.match, changed_files))
-    print("new list",newlist)
     if len(newlist) != 0:
         appList.append(appName)
 
-sleep(5)
+sleep(3)
 print('+++ Apps with changes: ',appList)
 
 # Get apps linking order
@@ -130,7 +129,6 @@ with open('order.yml', 'r') as file:
         # If changed apps count > 0
         if len(appList) != 0:
             for group in chunker(valuesYaml[key], 2):
-                print(group)
                 for app in group:
                     if app in appList:
 
@@ -172,6 +170,7 @@ with open('order.yml', 'r') as file:
          
 print("+++ Done linking")
 
+# update the last commit id in the commit file
 with open('commits.txt','w') as f:
     f.seek(0)
     f.write(str(commits_list[0]))
