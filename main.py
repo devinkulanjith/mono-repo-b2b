@@ -135,7 +135,7 @@ with open('order.yml', 'r') as file:
                 print("+++ All sub processes: ", linkAppNameDict.keys())
 
                 # Create new processes to listen vtex link output logs
-                for app in valuesYaml[key]:
+                for app in group:
                     if app in appList:
 
                         # create a new process
