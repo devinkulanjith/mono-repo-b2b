@@ -100,12 +100,14 @@ if not latestLinkComment:
 
 changed_files = []
 
-for x in commits_list[0].diff(latestLinkComment):
-    if x.a_blob.path not in changed_files:
-        changed_files.append(x.a_blob.path)
-        
-    if x.b_blob is not None and x.b_blob.path not in changed_files:
-        changed_files.append(x.b_blob.path)
+for x in commits_list[0].diff("d72fe09c2a9223ecb2fdcaa41f9b95460dd61190"):
+    if x.a_blob:
+        if x.a_blob.path not in changed_files:
+            changed_files.append(x.a_blob.path)
+
+    if x.b_blob:
+        if x.b_blob is not None and x.b_blob.path not in changed_files:
+            changed_files.append(x.b_blob.path)
 
 ##  Get all changed apps and order them
 
