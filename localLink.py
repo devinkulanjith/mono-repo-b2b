@@ -96,7 +96,7 @@ if not latestLinkComment:
 
 changed_files = []
 
-for x in commits_list[0].diff("a5b2391f90336d44e8945088078e7cfb26fe256e"):
+for x in commits_list[0].diff(latestLinkComment):
     if x.a_blob.path not in changed_files:
         changed_files.append(x.a_blob.path)
         
@@ -109,7 +109,9 @@ print("change file", changed_files)
 for app in appListOrder:
     appName = app.replace('\n','')
     print("app Name", appName)
-    if appName in changed_files:
+    r = re.compile(f".*{appName}")
+    newlist = list(filter(r.match, changed_files))
+    if appName in newlist:
         print("app", appName)
         appList.append(appName)
 
