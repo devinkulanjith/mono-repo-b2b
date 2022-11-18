@@ -6,6 +6,7 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
+import git
 
 branchName = "monorepoappstesting"
 modifiedBranchName = re.sub('[^a-z\n\.]', '', branchName)
@@ -29,8 +30,9 @@ linkAppNameDict = {}
 processorsForLink = []
 
 # Changed apps
-appList =  ["b2b-accelerator-consumer-store-theme","b2b-accelerator-dealer-map","b2b-accelerator-map-admin","b2b-accelerator-place-components"]
+appList =  []
 
+latestLinkComment = ''
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
@@ -56,7 +58,6 @@ def watchLinkAction(appName):
             
             result = contents.find(LINK_SUCCESSFUL_SENTENCE)
         
-           
             # If log file contains link success message
             if result != -1:
                 
@@ -80,19 +81,35 @@ def watchLinkAction(appName):
                 except Exception as e:
                     print("--- something went wrong", e)
 
+def chunker(seq, size):
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
-###  Get all changed apps and order them
-# with open('changeList.txt', 'r', encoding='utf-8') as file:
-#     contents = file.read()
-#     for app in appListOrder:
-#         appName = app.replace('\n','')
-#         result = contents.find(appName)
-#         if result != -1:
-#             appList.append(appName)
 
-# Remove changed files list
-# p2 = subprocess.Popen("rm changeList.txt", stdout=True, shell=True)
-# p2.wait()
+repo = git.Repo(currentDirectory) 
+commits_list = list(repo.iter_commits())
+
+with open('commits.txt','r') as f:
+    latestLinkComment = f.readlines()
+    f.close()
+
+
+changed_files = []
+
+for x in commits_list[0].diff(latestLinkComment):
+    if x.a_blob.path not in changed_files:
+        changed_files.append(x.a_blob.path)
+        
+    if x.b_blob is not None and x.b_blob.path not in changed_files:
+        changed_files.append(x.b_blob.path)
+
+##  Get all changed apps and order them
+
+for app in appListOrder:
+    appName = app.replace('\n','')
+    result = changed_files.find(appName)
+    if result != -1:
+        appList.append(appName)
+
 
 print('+++ Apps with changes: ',appList)
 
@@ -107,44 +124,46 @@ with open('order.yml', 'r') as file:
         sleep(5)
         # If changed apps count > 0
         if len(appList) != 0:
-            for app in valuesYaml[key]:
-                if app in appList:
+            for group in chunker(valuesYaml[key], 2):
+                print(group)
+                for app in group:
+                    if app in appList:
 
-                    # go to current directory
-                    os.chdir(currentDirectory + '/' + app)
-                    
-                    print("+++ Working directory ", currentDirectory + '/' + app)
-                    
-                    # Open sub process to link an app and write output into a log file
-                    pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
+                        # go to current directory
+                        os.chdir(currentDirectory + '/' + app)
+                        
+                        print("+++ Working directory ", currentDirectory + '/' + app)
+                        
+                        # Open sub process to link an app and write output into a log file
+                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
 
-                    sleep(3)
-                    print("+++ Process started: ", pro.pid)
+                        sleep(3)
+                        print("+++ Process started: ", pro.pid)
 
-                    # Keep subprocess for future use
-                    linkAppNameDict[app] = pro
+                        # Keep subprocess for future use
+                        linkAppNameDict[app] = pro
 
-                    sleep(3)
+                        sleep(3)
 
-            print("+++ All sub processes: ", linkAppNameDict.keys())
+                print("+++ All sub processes: ", linkAppNameDict.keys())
 
-            # Create new processes to listen vtex link output logs
-            for app in valuesYaml[key]:
-                if app in appList:
+                # Create new processes to listen vtex link output logs
+                for app in group:
+                    if app in appList:
 
-                    # create a new process
-                    linkProcess = Process(target= watchLinkAction, args=(app,))
-                    linkProcess.start()
-                    
-                    sleep(3)
-                    
-                    # Keep opened processes for future use
-                    processorsForLink.append(linkProcess)
+                        # create a new process
+                        linkProcess = Process(target= watchLinkAction, args=(app,))
+                        linkProcess.start()
+                        
+                        sleep(3)
+                        
+                        # Keep opened processes for future use
+                        processorsForLink.append(linkProcess)
 
-            # Join previously opened processes
-            for linkSubProcess in processorsForLink:
-                print("+++ Joining the process ", linkSubProcess.pid)
-                linkSubProcess.join()
+                # Join previously opened processes
+                for linkSubProcess in processorsForLink:
+                    print("+++ Joining the process ", linkSubProcess.pid)
+                    linkSubProcess.join()
          
 print("+++ Done linking")
 

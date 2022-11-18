@@ -1,2 +1,2 @@
-parent_level: ["b2b-accelerator-consumer-store-theme", "b2b-accelerator-dealer-map"]
+parent_level: ["b2b-accelerator-consumer-store-theme", "b2b-accelerator-dealer-map", "b2b-accelerator-map-admin"]
 first_child_level: ["b2b-accelerator-place-components"]
