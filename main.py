@@ -97,7 +97,7 @@ with open('changeList.txt', 'r', encoding='utf-8') as file:
             appList.append(appName)
 
 # Remove changed files list
-p2 = subprocess.Popen("rm changeList.txt", stdout=True, shell=True)
+p2 = subprocess.Popen("rm changeList.txt", stdout=False, shell=True)
 p2.wait()
 
 print('+++ Apps with changes: ',appList)
