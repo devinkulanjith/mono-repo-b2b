@@ -126,7 +126,7 @@ with open('order.yml', 'r') as file:
                         print("+++ Working directory ", currentDirectory + '/' + app)
                         
                         # Open sub process to link an app and write output into a log file
-                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderror= False, shell=True)
+                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderr= False, shell=True)
 
                         sleep(3)
                         print("+++ Process started: ", pro.pid)
