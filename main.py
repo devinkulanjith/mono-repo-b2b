@@ -40,11 +40,11 @@ def watchLinkAction(appName):
         # Go to working directory
         os.chdir(currentDirectory + "/" + appName)
 
-        print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
-
+        # print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+        
         var = True
         sleep(3)
-
+        spinner.text = "Ready to read log file in "
         # while condition met
         while var:
             with open('output.txt', 'r', encoding='utf-8') as file:
@@ -71,7 +71,6 @@ def watchLinkAction(appName):
                     
                     try:
                         print("+++ Before killing process: ", linkAppNameDict[appName].pid)
-                        spinner.ok("✅ ")
                         # Kill file linking subprocess
                         linkAppNameDict[appName].kill()
 
@@ -83,6 +82,8 @@ def watchLinkAction(appName):
                     except Exception as e:
                         spinner.fail("💥 ")
                         print("--- something went wrong", e)
+
+        spinner.ok("✅ ")
 
 
 #function for chunk the links app array
