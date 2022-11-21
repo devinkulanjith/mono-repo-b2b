@@ -32,13 +32,6 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-with yaspin(text="Colors!") as sp:
-    # Support all basic termcolor text colors
-    colors = ("red", "green", "yellow", "blue", "magenta", "cyan", "white")
-
-    for color in colors:
-        sp.color, sp.text = color, color
-        sleep(1)
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
