@@ -35,55 +35,51 @@ appList =  []
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
-    with yaspin(text="loading", color="yellow") as spinner:
             
-        # Go to working directory
-        os.chdir(currentDirectory + "/" + appName)
+    # Go to working directory
+    os.chdir(currentDirectory + "/" + appName)
 
-        # print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+    # print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+    
+    var = True
+    sleep(3)
+    # while condition met
+    while var:
+        with open('output.txt', 'r', encoding='utf-8') as file:
+
+            # Read every 30 seconds
+            sleep(30)
+
+            contents = file.read()
+
+            # Sentence to match inside the content
+            LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
+            
+            result = contents.find(LINK_SUCCESSFUL_SENTENCE)
         
-        var = True
-        sleep(3)
-        spinner.text = "Ready to read log file in "
-        # while condition met
-        while var:
-            with open('output.txt', 'r', encoding='utf-8') as file:
-
-                # Read every 30 seconds
-                sleep(30)
-
-                contents = file.read()
-
-                # Sentence to match inside the content
-                LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
+        
+            # If log file contains link success message
+            if result != -1:
                 
-                result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-            
-            
-                # If log file contains link success message
-                if result != -1:
-                    
-                    print("+++ Matched result for: ", appName, " result: ", result)
-                    print("+++ Content or app: ", appName, " ===> ", contents)
-                    var = False
-                    
-                    print("+++ App link successful", appName)
-                    
-                    try:
-                        print("+++ Before killing process: ", linkAppNameDict[appName].pid)
-                        # Kill file linking subprocess
-                        linkAppNameDict[appName].kill()
+                print("+++ Matched result for: ", appName, " result: ", result)
+                print("+++ Content or app: ", appName, " ===> ", contents)
+                var = False
+                
+                print("+++ App link successful", appName)
+                
+                try:
+                    print("+++ Before killing process: ", linkAppNameDict[appName].pid)
+                    # Kill file linking subprocess
+                    linkAppNameDict[appName].kill()
 
-                        print("+++ After killing process: ", linkAppNameDict[appName].pid)
+                    print("+++ After killing process: ", linkAppNameDict[appName].pid)
 
-                        # Remove output.txt file
-                        subprocess.Popen("rm output.txt", shell=True)
-                        print("+++ Output file removed ")
-                    except Exception as e:
-                        spinner.fail("💥 ")
-                        print("--- something went wrong", e)
+                    # Remove output.txt file
+                    subprocess.Popen("rm output.txt", shell=True)
+                    print("+++ Output file removed ")
+                except Exception as e:
+                    print("--- something went wrong", e)
 
-        spinner.ok("✅ ")
 
 
 #function for chunk the links app array
@@ -109,53 +105,55 @@ print('+++ Apps with changes: ',appList)
 # Get apps linking order
 with open('order.yml', 'r') as file:
     valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
-    
-    for key in valuesYaml:
-        sleep(3)
-        print(f"+++ Starinting App link in {key} level")
-        sleep(5)
-        # If changed apps count > 0
-        if len(appList) != 0:
-            for group in chunker(valuesYaml[key], 2):
-                linkAppNameDict.clear()
-                for app in group:
-                    if app in appList:
+    with yaspin(text="App linking") as sp:
+        sp.color = "green"
+        for key in valuesYaml:
+            sleep(3)
+            print(f"+++ Starinting App link in {key} level")
+            sleep(5)
+            # If changed apps count > 0
+            if len(appList) != 0:
+                for group in chunker(valuesYaml[key], 2):
+                    linkAppNameDict.clear()
+                    for app in group:
+                        if app in appList:
 
-                        # go to current directory
-                        os.chdir(currentDirectory + '/' + app)
-                        
-                        print("+++ Working directory ", currentDirectory + '/' + app)
-                        
-                        # Open sub process to link an app and write output into a log file
-                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderr= False, shell=True)
+                            # go to current directory
+                            os.chdir(currentDirectory + '/' + app)
+                            
+                            print("+++ Working directory ", currentDirectory + '/' + app)
+                            
+                            # Open sub process to link an app and write output into a log file
+                            pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderr= False, shell=True)
 
-                        sleep(3)
-                        print("+++ Process started: ", pro.pid)
+                            sleep(3)
+                            print("+++ Process started: ", pro.pid)
+                            sp.text = app
 
-                        # Keep subprocess for future use
-                        linkAppNameDict[app] = pro
+                            # Keep subprocess for future use
+                            linkAppNameDict[app] = pro
 
-                        sleep(3)
+                            sleep(3)
 
-                print("+++ All sub processes: ", linkAppNameDict.keys())
+                    print("+++ All sub processes: ", linkAppNameDict.keys())
 
-                # Create new processes to listen vtex link output logs
-                for app in group:
-                    if app in appList:
+                    # Create new processes to listen vtex link output logs
+                    for app in group:
+                        if app in appList:
 
-                        # create a new process
-                        linkProcess = Process(target= watchLinkAction, args=(app,))
-                        linkProcess.start()
-                        
-                        sleep(3)
-                        
-                        # Keep opened processes for future use
-                        processorsForLink.append(linkProcess)
+                            # create a new process
+                            linkProcess = Process(target= watchLinkAction, args=(app,))
+                            linkProcess.start()
+                            
+                            sleep(3)
+                            
+                            # Keep opened processes for future use
+                            processorsForLink.append(linkProcess)
 
-                # Join previously opened processes
-                for linkSubProcess in processorsForLink:
-                    print("+++ Joining the process ", linkSubProcess.pid)
-                    linkSubProcess.join()
+                    # Join previously opened processes
+                    for linkSubProcess in processorsForLink:
+                        print("+++ Joining the process ", linkSubProcess.pid)
+                        linkSubProcess.join()
          
 print("+++ Done linking")
 
