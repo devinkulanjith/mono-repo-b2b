@@ -32,6 +32,13 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
+with yaspin(text="Colors!") as sp:
+    # Support all basic termcolor text colors
+    colors = ("red", "green", "yellow", "blue", "magenta", "cyan", "white")
+
+    for color in colors:
+        sp.color, sp.text = color, color
+        sleep(1)
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
@@ -105,56 +112,53 @@ print('+++ Apps with changes: ',appList)
 # Get apps linking order
 with open('order.yml', 'r') as file:
     valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
-    with yaspin(text="App linking") as sp:
-        sleep(4)
-        sp.color = "green"
-        for key in valuesYaml:
-            sleep(3)
-            print(f"+++ Starinting App link in {key} level")
-            sleep(5)
-            # If changed apps count > 0
-            if len(appList) != 0:
-                for group in chunker(valuesYaml[key], 2):
-                    linkAppNameDict.clear()
-                    for app in group:
-                        if app in appList:
+    
+    for key in valuesYaml:
+        sleep(3)
+        print(f"+++ Starinting App link in {key} level")
+        sleep(5)
+        # If changed apps count > 0
+        if len(appList) != 0:
+            for group in chunker(valuesYaml[key], 2):
+                linkAppNameDict.clear()
+                for app in group:
+                    if app in appList:
 
-                            # go to current directory
-                            os.chdir(currentDirectory + '/' + app)
-                            
-                            print("+++ Working directory ", currentDirectory + '/' + app)
-                            
-                            # Open sub process to link an app and write output into a log file
-                            pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderr= False, shell=True)
+                        # go to current directory
+                        os.chdir(currentDirectory + '/' + app)
+                        
+                        print("+++ Working directory ", currentDirectory + '/' + app)
+                        
+                        # Open sub process to link an app and write output into a log file
+                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderr= False, shell=True)
 
-                            sleep(3)
-                            print("+++ Process started: ", pro.pid)
-                            sp.text = app
+                        sleep(3)
+                        print("+++ Process started: ", pro.pid)
 
-                            # Keep subprocess for future use
-                            linkAppNameDict[app] = pro
+                        # Keep subprocess for future use
+                        linkAppNameDict[app] = pro
 
-                            sleep(3)
+                        sleep(3)
 
-                    print("+++ All sub processes: ", linkAppNameDict.keys())
+                print("+++ All sub processes: ", linkAppNameDict.keys())
 
-                    # Create new processes to listen vtex link output logs
-                    for app in group:
-                        if app in appList:
+                # Create new processes to listen vtex link output logs
+                for app in group:
+                    if app in appList:
 
-                            # create a new process
-                            linkProcess = Process(target= watchLinkAction, args=(app,))
-                            linkProcess.start()
-                            
-                            sleep(3)
-                            
-                            # Keep opened processes for future use
-                            processorsForLink.append(linkProcess)
+                        # create a new process
+                        linkProcess = Process(target= watchLinkAction, args=(app,))
+                        linkProcess.start()
+                        
+                        sleep(3)
+                        
+                        # Keep opened processes for future use
+                        processorsForLink.append(linkProcess)
 
-                    # Join previously opened processes
-                    for linkSubProcess in processorsForLink:
-                        print("+++ Joining the process ", linkSubProcess.pid)
-                        linkSubProcess.join()
+                # Join previously opened processes
+                for linkSubProcess in processorsForLink:
+                    print("+++ Joining the process ", linkSubProcess.pid)
+                    linkSubProcess.join()
          
 print("+++ Done linking")
 
