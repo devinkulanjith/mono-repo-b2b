@@ -6,6 +6,7 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
+from yaspin import yaspin
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -34,51 +35,54 @@ appList =  []
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
-    # Go to working directory
-    os.chdir(currentDirectory + "/" + appName)
-
-    print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
-
-    var = True
-    sleep(3)
-
-    # while condition met
-    while var:
-        with open('output.txt', 'r', encoding='utf-8') as file:
-
-            # Read every 30 seconds
-            sleep(30)
-
-            contents = file.read()
-
-            # Sentence to match inside the content
-            LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
+    with yaspin(text="loading", color="yellow") as spinner:
             
-            result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-        
-           
-            # If log file contains link success message
-            if result != -1:
+        # Go to working directory
+        os.chdir(currentDirectory + "/" + appName)
+
+        print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+
+        var = True
+        sleep(3)
+
+        # while condition met
+        while var:
+            with open('output.txt', 'r', encoding='utf-8') as file:
+
+                # Read every 30 seconds
+                sleep(30)
+
+                contents = file.read()
+
+                # Sentence to match inside the content
+                LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
                 
-                print("+++ Matched result for: ", appName, " result: ", result)
-                print("+++ Content or app: ", appName, " ===> ", contents)
-                var = False
-                
-                print("+++ App link successful", appName)
-                
-                try:
-                    print("+++ Before killing process: ", linkAppNameDict[appName].pid)
+                result = contents.find(LINK_SUCCESSFUL_SENTENCE)
+            
+            
+                # If log file contains link success message
+                if result != -1:
                     
-                    # Kill file linking subprocess
-                    linkAppNameDict[appName].kill()
+                    print("+++ Matched result for: ", appName, " result: ", result)
+                    print("+++ Content or app: ", appName, " ===> ", contents)
+                    var = False
+                    
+                    print("+++ App link successful", appName)
+                    
+                    try:
+                        print("+++ Before killing process: ", linkAppNameDict[appName].pid)
+                        spinner.ok("✅ ")
+                        # Kill file linking subprocess
+                        linkAppNameDict[appName].kill()
 
-                    print("+++ After killing process: ", linkAppNameDict[appName].pid)
+                        print("+++ After killing process: ", linkAppNameDict[appName].pid)
 
-                    # Remove output.txt file
-                    subprocess.Popen("rm output.txt", shell=True)
-                    print("+++ Output file removed ")
-                except Exception as e:
-                    print("--- something went wrong", e)
+                        # Remove output.txt file
+                        subprocess.Popen("rm output.txt", shell=True)
+                        print("+++ Output file removed ")
+                    except Exception as e:
+                        spinner.fail("💥 ")
+                        print("--- something went wrong", e)
 
 
 #function for chunk the links app array
@@ -122,7 +126,7 @@ with open('order.yml', 'r') as file:
                         print("+++ Working directory ", currentDirectory + '/' + app)
                         
                         # Open sub process to link an app and write output into a log file
-                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= True, shell=True)
+                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt", stdout= False, stderror= False, shell=True)
 
                         sleep(3)
                         print("+++ Process started: ", pro.pid)
