@@ -106,6 +106,7 @@ print('+++ Apps with changes: ',appList)
 with open('order.yml', 'r') as file:
     valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
     with yaspin(text="App linking") as sp:
+        sleep(4)
         sp.color = "green"
         for key in valuesYaml:
             sleep(3)
