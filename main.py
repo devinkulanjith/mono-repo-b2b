@@ -6,7 +6,7 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
-from yaspin import yaspin
+from termcolor import colored
 
 branchName = os.getenv('BRANCH_NAME')
 modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
@@ -32,7 +32,7 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-
+print (colored('hello', 'red'), colored('world', 'green'))
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
