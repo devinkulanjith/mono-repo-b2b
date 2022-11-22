@@ -34,7 +34,8 @@ appList =  []
 
 
 
-subprocess.Popen('echo -e "\033[31;1;4mHello\033[0m"' , shell=True)
+subprocess.Popen('echo "\033[31;1;4mHello\033[0m"' , shell=True)
+print (u"\u001b[1m\u001b[31m Red Bold \u001b[0m")
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
