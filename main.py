@@ -32,7 +32,9 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-print (colored('hello', 'red'), colored('world', 'green'))
+
+
+subprocess.Popen('echo -e "\033[31;1;4mHello\033[0m"' , shell=True)
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
@@ -123,7 +125,7 @@ with open('order.yml', 'r') as file:
                         print("+++ Working directory ", currentDirectory + '/' + app)
                         
                         # Open sub process to link an app and write output into a log file
-                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=subprocess._FILE, stderr= subprocess._FILE, shell=True)
+                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
 
                         sleep(3)
                         print("+++ Process started: ", pro.pid)
