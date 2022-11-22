@@ -61,24 +61,21 @@ def watchLinkAction(appName):
             # If log file contains link success message
             if result != -1:
                 
-                print("+++ Matched result for: ", appName, " result: ", result)
-                print("+++ Content or app: ", appName, " ===> ", contents)
+                print (f"\u001b[33;1m +++ Matched result for:  {appName} result: {result}\u001b[0m")
                 var = False
                 
-                print("+++ App link successful", appName)
+                print (f"\u001b[33;1m +++ App link successful {appName} \u001b[0m")
                 
                 try:
-                    print("+++ Before killing process: ", linkAppNameDict[appName].pid)
+                    print (f"\u001b[33;1m +++ App will be killed {appName} \u001b[0m")
                     # Kill file linking subprocess
                     linkAppNameDict[appName].kill()
 
-                    print("+++ After killing process: ", linkAppNameDict[appName].pid)
-
                     # Remove output.txt file
                     subprocess.Popen("rm output.txt", shell=True)
-                    print("+++ Output file removed ")
+                    print (f"\u001b[33;1m +++ output file removed \u001b[0m")
                 except Exception as e:
-                    print("--- something went wrong", e)
+                    print (f"\u001b[33;1m --- something went wrong \u001b[32m")
 
 
 
@@ -108,7 +105,7 @@ with open('order.yml', 'r') as file:
     
     for key in valuesYaml:
         sleep(3)
-        print(f"+++ Starinting App link in {key} level")
+        print (f"\u001b[33;1m +++ Starinting App link in {key} level \u001b[0m") 
         sleep(5)
         # If changed apps count > 0
         if len(appList) != 0:
