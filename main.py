@@ -33,9 +33,6 @@ processorsForLink = []
 appList =  []
 
 
-
-subprocess.Popen('echo "\033[31;1;4mHello\033[0m"' , shell=True)
-print (u"\u001b[1m\u001b[31m Red Bold \u001b[0m")
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
@@ -155,6 +152,7 @@ with open('order.yml', 'r') as file:
                 for linkSubProcess in processorsForLink:
                     print("+++ Joining the process ", linkSubProcess.pid)
                     linkSubProcess.join()
-         
-print("+++ Done linking")
+
+print (u"\u001b[33;1m +++ Done linking \u001b[0m")         
+
 
