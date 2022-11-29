@@ -32,7 +32,7 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-pro = subprocess.Popen("git diff --name-status main", stdout= True, shell=True)
+pro = subprocess.Popen("git diff --name-status master", stdout= True, shell=True)
 pro.wait()
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
