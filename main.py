@@ -32,7 +32,8 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-
+pro = subprocess.Popen("git diff --name-status main", stdout= True, shell=True)
+pro.wait()
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
@@ -150,6 +151,4 @@ with open('order.yml', 'r') as file:
                     print("+++ Joining the process ", linkSubProcess.pid)
                     linkSubProcess.join()
 
-print (u"\u001b[33;1m +++ Done linking \u001b[0m")         
-
-
+print (u"\u001b[33;1m +++ Done linking \u001b[0m")          
