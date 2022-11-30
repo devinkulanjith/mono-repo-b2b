@@ -43,9 +43,9 @@ jobs:
           account: cloudab2b
           app-key: ${{ secrets.CLOUDA_B2B_APP_KEY }}
           app-token: ${{ secrets.CLOUDA_B2B_APP_TOKEN }}
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v34
+      # - name: Get changed files
+      #   id: changed-files
+      #   uses: tj-actions/changed-files@v34
       - name: branch name
         run: |
           if ${IS_PR}; then
