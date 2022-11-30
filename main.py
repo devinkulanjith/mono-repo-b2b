@@ -34,7 +34,7 @@ appList =  []
 
 pro = subprocess.Popen("git diff --name-status master > trys.txt", stdout= True, shell=True)
 pro.wait()
-with open('try.txt', 'r', encoding='utf-8') as file:
+with open('trys.txt', 'r', encoding='utf-8') as file:
     contents = file.read()
     for x in contents:
         print("+++++x content ++++", x)
