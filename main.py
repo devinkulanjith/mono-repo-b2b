@@ -32,8 +32,11 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-pro = subprocess.Popen("git diff --name-status master", stdout= True, shell=True)
+pro = subprocess.Popen("git diff --name-status master > try.txt", stdout= True, shell=True)
 pro.wait()
+with open('try.txt', 'r', encoding='utf-8') as file:
+    contents = file.read()
+    print("content", contents)
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
