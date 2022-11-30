@@ -56,8 +56,8 @@ jobs:
           echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV        
       - name: List all changed files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed" >> changeList.txt
-          done
+          # for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          #   echo "$file was changed" >> changeList.txt
+          # done
           python3 main.py
 
