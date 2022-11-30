@@ -32,7 +32,7 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-pro = subprocess.Popen("git diff --name-only master > trys.txt", stdout= True, shell=True)
+pro = subprocess.Popen("git diff --name-only master", stdout= True, shell=True)
 pro.wait()
 with open('trys.txt', 'r', encoding='utf-8') as file:
     contents = file.read()
