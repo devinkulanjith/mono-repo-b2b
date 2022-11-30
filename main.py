@@ -36,7 +36,8 @@ pro = subprocess.Popen("git diff --name-status master > try.txt", stdout= True, 
 pro.wait()
 with open('try.txt', 'r', encoding='utf-8') as file:
     contents = file.read()
-    print("content", contents)
+    for x in contents:
+        print("+++++x content ++++", x)
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
             
