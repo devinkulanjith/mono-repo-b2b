@@ -9,7 +9,15 @@ import yaml
 from termcolor import colored
 
 branchName = os.getenv('BRANCH_NAME')
-modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
+
+if branchName:
+    modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
+else:
+    branchNameProcess = subprocess.Popen('git branch --show-current',stdout=subprocess.PIPE, shell=True)
+    branchNameProcess.wait()
+    branch = re.sub('[^a-zA-Z \n\.]', '', str(branchNameProcess.communicate()[0]).split("'")[1])
+    modifiedBranchName = branch[:-1]
+
 
 linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
 subprocess.Popen( linkCommand, shell=True)
@@ -32,14 +40,8 @@ processorsForLink = []
 # Changed apps
 appList =  []
 
-pro = subprocess.Popen("git diff --name-only origin/master > changeList.txt", stdout= True, shell=True)
+pro = subprocess.Popen("git diff --name-only master > changeList.txt", stdout= True, shell=True)
 pro.wait()
-# with open('trys.txt', 'r', encoding='utf-8') as file:
-#     contents = file.read()
-
-#     print("+++++x content ++++", contents)
-
-# subprocess.Popen("rm trys.txt", stdout= True, shell=True)
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName):
@@ -159,4 +161,3 @@ with open('order.yml', 'r') as file:
                     linkSubProcess.join()
 
 print (u"\u001b[33;1m +++ Done linking \u001b[0m")      
-    
