@@ -126,4 +126,5 @@ for changeApp in changedAppList:
                             proc = subprocess.Popen("echo --- App is not published successfully ---", stdout= True, shell=True)
             
         mainLoop = True
+        numberOfRetry = 0
 
