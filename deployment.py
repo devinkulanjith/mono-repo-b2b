@@ -94,7 +94,7 @@ for changeApp in changedAppList:
         sleep(5)
         while mainLoop:
             numberOfRetry = numberOfRetry + 1
-            proc = subprocess.Popen(f"echo \u001b[33;1m +++ Normal Deployment goes with \u001b[0m {changeApp} with Attempt {numberOfRetry}", stdout= True, shell=True)
+            proc = subprocess.Popen(f"echo +++ Normal Deployment goes with {changeApp} with Attempt {numberOfRetry} +++", stdout= True, shell=True)
             proc.wait()
             p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
             
@@ -109,7 +109,7 @@ for changeApp in changedAppList:
                     if successResult != -1: 
                         var = False
                         mainLoop = False
-                        proc = subprocess.Popen("echo \u001b[33;1m +++ App published successfully \u001b[0m", stdout= True, shell=True)
+                        proc = subprocess.Popen("echo +++ App published successfully +++", stdout= True, shell=True)
                         proc.wait()
                         process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                         process.wait()
@@ -122,7 +122,7 @@ for changeApp in changedAppList:
                         process.wait()
                         if numberOfRetry > 3:
                             mainLoop = False
-                            proc = subprocess.Popen("echo  \u001b[31m App is not published successfully \u001b[0m", stdout= True, shell=True)
+                            proc = subprocess.Popen("echo --- App is not published successfully ---", stdout= True, shell=True)
             
         mainLoop = True
 
