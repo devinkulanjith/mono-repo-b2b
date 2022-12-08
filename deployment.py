@@ -4,6 +4,7 @@ import re
 from time import sleep
 from multiprocessing import Process
 from os import kill
+from signal import SIGKILL
 
 currentDirectory = os.getcwd()
 branchName = os.getenv('BRANCH_NAME')
@@ -116,7 +117,7 @@ for changeApp in changedAppList:
                         p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
                         p6.wait()
                     elif failResult != -1:
-                        p5.pid.kill()
+                        kill(p5.pid, SIGKILL)
                         var = False
                         process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                         process.wait()
