@@ -92,10 +92,10 @@ for changeApp in changedAppList:
         sleep(5)
         # print("normal deplyment goes here for the app", changeApp)
         # p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
-        publishAppDict[changeApp] = publishProcess.pid
+        
         publishProcess = Process(target=normalAppPublish, args=(changeApp,))
         publishProcess.start()
- 
+        publishAppDict[changeApp] = publishProcess.pid
         errorDetect = Process(target= errorMonitor, args=(changeApp,))
         errorDetect.start()
         publishProcess.join()
