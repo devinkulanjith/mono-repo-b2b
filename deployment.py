@@ -109,7 +109,7 @@ for changeApp in changedAppList:
                     if successResult != -1: 
                         var = False
                         mainLoop = False
-                        proc = subprocess.Popen("\u001b[33;1m +++ App Published Successfully \u001b[0m", stdout= True, shell=True)
+                        proc = subprocess.Popen("+++ App Published Successfully +++", stdout= True, shell=True)
                         proc.wait()
                         process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                         process.wait()
@@ -122,7 +122,7 @@ for changeApp in changedAppList:
                         process.wait()
                         if numberOfRetry > 3:
                             mainLoop = False
-                            proc = subprocess.Popen("\u001b[31m +++ App is Not Published  Successfully \u001b[0m", stdout= True, shell=True)
+                            proc = subprocess.Popen(" --- App is Not Published  Successfully ---", stdout= True, shell=True)
             
         mainLoop = True
 
