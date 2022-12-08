@@ -46,50 +46,48 @@ with open('temp.txt', 'r', encoding='utf-8') as file:
 p2 = subprocess.Popen("rm temp.txt", stdout=True, shell=True)
 p2.wait()
 
-# def errorMonitor(app):
-#     stepper = stepper + 1
-#     var = True
-#     while var:
-#         with open('error.txt','r',encoding='utf-8') as file:
-#             sleep(5)
-#             content = file.read()
-#             PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
-#             PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
-#             successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
-#             failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
-#             if (successResult): 
-#                 var = False
-#                 process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
-#                 process.wait()
-#                 p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
-#                 p6.wait()
-            # elif (failResult):
-            #     publishAppDict[app].kill()
-            #     process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
-            #     process.wait()
-            #     if stepper < 3 :
-            #         normalAppPublish(app)
-            #         errorDetect(app)
-
-                    
-
-
-# def normalAppPublish(changeApp):
-#     print("normal deplyment goes here for the app", changeApp)
-#     subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
 
 for changeApp in changedAppList:
     if changeApp in blockLevelChangedAppList:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
-        print("special deployment with 7 minute waiting goes there for app", changeApp)
-        p3 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force", stdout= True, shell=True)
-        p3.wait()
-        sleep(480)
-        p0 = subprocess.Popen( "echo 'yes' | vtex deploy", stdout= True, shell=True)
-        p0.wait()
-        p4=subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
-        p4.wait()
+        while mainLoop:
+            numberOfRetry = numberOfRetry + 1
+            proc = subprocess.Popen(f"echo +++special deployment with 7 minute waiting goes there for app {changeApp} with Attempt {numberOfRetry} +++", stdout= True, shell=True)
+            proc.wait()
+            p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
+            
+            sleep(3)
+            var = True
+            while var:
+                with open('error.txt','r',encoding='utf-8') as file:
+                    sleep(5)
+                    content = file.read()
+                    successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
+                    failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
+                    if successResult != -1: 
+                        var = False
+                        mainLoop = False
+                        proc = subprocess.Popen("echo +++ App published successfully +++", stdout= True, shell=True)
+                        proc.wait()
+                        process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
+                        process.wait()
+                        sleep(480)
+                        p0 = subprocess.Popen( "echo 'yes' | vtex deploy", stdout= True, shell=True)
+                        p0.wait()
+                        p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
+                        p6.wait()
+                    elif failResult != -1:
+                        kill(p5.pid, SIGKILL)
+                        var = False
+                        process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
+                        process.wait()
+                        if numberOfRetry > 3:
+                            mainLoop = False
+                            proc = subprocess.Popen("echo --- App is not published successfully ---", stdout= True, shell=True)
+            
+        mainLoop = True
+        numberOfRetry = 0
     else:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
