@@ -43,23 +43,23 @@ with open('temp.txt', 'r', encoding='utf-8') as file:
 p2 = subprocess.Popen("rm temp.txt", stdout=True, shell=True)
 p2.wait()
 
-def errorMonitor(app):
-    stepper = stepper + 1
-    var = True
-    while var:
-        with open('error.txt','r',encoding='utf-8') as file:
-            sleep(5)
-            content = file.read()
-            PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
-            PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
-            successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
-            failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
-            if (successResult): 
-                var = False
-                process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
-                process.wait()
-                p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
-                p6.wait()
+# def errorMonitor(app):
+#     stepper = stepper + 1
+#     var = True
+#     while var:
+#         with open('error.txt','r',encoding='utf-8') as file:
+#             sleep(5)
+#             content = file.read()
+#             PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
+#             PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
+#             successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
+#             failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
+#             if (successResult): 
+#                 var = False
+#                 process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
+#                 process.wait()
+#                 p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
+#                 p6.wait()
             # elif (failResult):
             #     publishAppDict[app].kill()
             #     process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
@@ -105,13 +105,13 @@ for changeApp in changedAppList:
                 PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
                 successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
                 failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
-                if (successResult): 
+                if successResult != -1: 
                     var = False
                     process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                     process.wait()
                     p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
                     p6.wait()
-                elif (failResult):
+                elif failResult != -1:
                     var = False
                     process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                     process.wait()
