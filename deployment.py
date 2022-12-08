@@ -90,36 +90,36 @@ for changeApp in changedAppList:
     else:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
-        # print("normal deplyment goes here for the app", changeApp)
-        # p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
+        print("normal deplyment goes here for the app", changeApp)
+        p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
         
-        publishProcess = Process(target=normalAppPublish, args=(changeApp,))
-        publishProcess.start()
-        sleep(3)
-        var = True
-        while var:
-            with open('error.txt','r',encoding='utf-8') as file:
-                sleep(5)
-                content = file.read()
-                PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
-                PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
-                successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
-                failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
-                if successResult != -1: 
-                    var = False
-                    process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
-                    process.wait()
-                    p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
-                    p6.wait()
-                elif failResult != -1:
-                    var = False
-                    process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
-                    process.wait()
+        # publishProcess = Process(target=normalAppPublish, args=(changeApp,))
+        # publishProcess.start()
+        # sleep(3)
+        # var = True
+        # while var:
+        #     with open('error.txt','r',encoding='utf-8') as file:
+        #         sleep(5)
+        #         content = file.read()
+        #         PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
+        #         PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
+        #         successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
+        #         failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
+        #         if successResult != -1: 
+        #             var = False
+        #             process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
+        #             process.wait()
+        #             p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
+        #             p6.wait()
+        #         elif failResult != -1:
+        #             var = False
+        #             process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
+        #             process.wait()
         # publishAppDict[changeApp] = publishProcess.pid
         # errorDetect = Process(target= errorMonitor, args=(changeApp,))
         # errorDetect.start()
         # publishProcess.join()
         # errorDetect.join()
         sleep(10)
-        # p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
-        # p6.wait()
+        p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
+        p6.wait()
