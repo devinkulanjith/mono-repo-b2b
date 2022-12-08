@@ -90,11 +90,11 @@ for changeApp in changedAppList:
     else:
         os.chdir(currentDirectory + '/' + changeApp)
         sleep(5)
-        # print("normal deplyment goes here for the app", changeApp)
-        # p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
+        print("normal deplyment goes here for the app", changeApp)
+        p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
         
-        publishProcess = Process(target=normalAppPublish, args=(changeApp,))
-        publishProcess.start()
+        # publishProcess = Process(target=normalAppPublish, args=(changeApp,))
+        # publishProcess.start()
         sleep(3)
         var = True
         while var:
@@ -120,6 +120,6 @@ for changeApp in changedAppList:
         # errorDetect.start()
         # publishProcess.join()
         # errorDetect.join()
-        sleep(10)
+        # sleep(10)
         # p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
         # p6.wait()
