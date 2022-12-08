@@ -23,6 +23,8 @@ appListOrder = apps.readlines()
 
 mainLoop = True
 numberOfRetry = 0
+PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
+PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
 p1 = subprocess.Popen(cmd, stdout=True, shell=True)
 p1.wait()
 
@@ -92,25 +94,23 @@ for changeApp in changedAppList:
         sleep(5)
         while mainLoop:
             numberOfRetry = numberOfRetry + 1
-            print(" ++++ normal deplyment goes here for the app +++++ ", changeApp)
-            print("++++Attemp Number++++", numberOfRetry)
+            proc = subprocess.Popen( f"++++ normal deployment goes here for the app +++++ {changeApp} with Attempt {numberOfRetry}", stdout= True, shell=True)
+            proc.wait()
             p5 = subprocess.Popen( "yes $'yes\nno'| vtex publish --force > error.txt", stdout= True, shell=True)
             
-            # publishProcess = Process(target=normalAppPublish, args=(changeApp,))
-            # publishProcess.start()
             sleep(3)
             var = True
             while var:
                 with open('error.txt','r',encoding='utf-8') as file:
                     sleep(5)
                     content = file.read()
-                    PUBLISH_SUCCESSFUL_SENTENCE = 'was published successfully!'
-                    PUBLISH_UNSUCCESSFUL_SENTENCE = 'Failed to publish'
                     successResult = content.find(PUBLISH_SUCCESSFUL_SENTENCE)
                     failResult = content.find(PUBLISH_UNSUCCESSFUL_SENTENCE)
                     if successResult != -1: 
                         var = False
                         mainLoop = False
+                        proc = subprocess.Popen("\u001b[33;1m +++ App Published Successfully \u001b[0m", stdout= True, shell=True)
+                        proc.wait()
                         process = subprocess.Popen("rm error.txt", stdout=True, shell=True)
                         process.wait()
                         p6= subprocess.Popen("echo 'yes' | vtex install", stdout= True, shell=True)
@@ -122,12 +122,7 @@ for changeApp in changedAppList:
                         process.wait()
                         if numberOfRetry > 3:
                             mainLoop = False
+                            proc = subprocess.Popen("\u001b[31m +++ App is Not Published  Successfully \u001b[0m", stdout= True, shell=True)
+            
+        mainLoop = True
 
-        # publishAppDict[changeApp] = publishProcess.pid
-        # errorDetect = Process(target= errorMonitor, args=(changeApp,))
-        # errorDetect.start()
-        # publishProcess.join()
-        # errorDetect.join()
-        # sleep(10)
-        # p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
-        # p6.wait()
