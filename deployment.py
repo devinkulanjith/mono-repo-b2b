@@ -96,6 +96,7 @@ for changeApp in changedAppList:
         publishProcess = Process(target=normalAppPublish, args=(changeApp,))
         publishProcess.start()
         sleep(3)
+        var = True
         while var:
             with open('error.txt','r',encoding='utf-8') as file:
                 sleep(5)
@@ -119,6 +120,6 @@ for changeApp in changedAppList:
         # errorDetect.start()
         # publishProcess.join()
         # errorDetect.join()
-        # sleep(10)
+        sleep(10)
         # p6= subprocess.Popen( "echo 'yes' | vtex install", stdout= True, shell=True)
         # p6.wait()
