@@ -62,6 +62,7 @@ export const createSession = async (
     await io.mkdirP(sessionDirectory)
   }
 
+
   await Promise.all([
     fs.writeFile(
       path.join(sessionDirectory, 'tokens.json'),
