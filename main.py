@@ -7,7 +7,6 @@ from os import kill
 import re
 import yaml
 import json
-# from preChecks import *
 
 
 ### Read vtex link output and terminate sub-processes
@@ -61,7 +60,7 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict):
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
-def checkVersions():
+async def checkVersions():
     file = open('manifest.json')
     data = json.load(file)
     version = data['version']
@@ -85,7 +84,7 @@ def checkVersions():
 def vtexLs():
     subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
 
-def main():
+async def main():
     branchName = os.getenv('BRANCH_NAME')
 
     if branchName:
@@ -156,6 +155,8 @@ def main():
                             os.chdir(currentDirectory + '/' + app)
                             
                             print("+++ Working directory ", currentDirectory + '/' + app)
+                            preCheck = await checkVersions()
+                            print('check versions', preCheck)
                             # preCheckProcess = Process(target= checkVersions)
                             # preCheckProcess.start()
                             # preCheckProcess.join()
