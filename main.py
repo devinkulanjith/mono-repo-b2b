@@ -6,7 +6,7 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
-import json
+from preChecks import *
 import asyncio
 
 
@@ -16,44 +16,46 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict):
     # Go to working directory
     os.chdir(currentDirectory + "/" + appName)
 
-    # print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+    print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
     
     var = True
     sleep(3)
     # while condition met
     while var:
-        with open('output.txt', 'r', encoding='utf-8') as file:
+        try:
+            with open('output.txt', 'r', encoding='utf-8') as file:
 
-            # Read every 30 seconds
-            sleep(30)
+                # Read every 30 seconds
+                sleep(30)
 
-            contents = file.read()
+                contents = file.read()
 
-            # Sentence to match inside the content
-            LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
+                # Sentence to match inside the content
+                LINK_SUCCESSFUL_SENTENCE = 'App linked successfully'
+                
+                result = contents.find(LINK_SUCCESSFUL_SENTENCE)
             
-            result = contents.find(LINK_SUCCESSFUL_SENTENCE)
-        
-        
-            # If log file contains link success message
-            if result != -1:
-                
-                print (f"\u001b[33;1m +++ Matched result for:  {appName} result: {result}\u001b[0m")
-                var = False
-                
-                print (f"\u001b[33;1m +++ App link successful {appName} \u001b[0m")
-                
-                try:
-                    print (f"\u001b[33;1m +++ App will be killed {appName} \u001b[0m")
-                    # Kill file linking subprocess
-                    linkAppNameDict[appName].kill()
+            
+                # If log file contains link success message
+                if result != -1:
+                    
+                    print (f"\u001b[33;1m +++ Matched result for:  {appName} result: {result}\u001b[0m")
+                    var = False
+                    
+                    print (f"\u001b[33;1m +++ App link successful {appName} \u001b[0m")
+                    
+                    try:
+                        print (f"\u001b[33;1m +++ App will be killed {appName} \u001b[0m")
+                        # Kill file linking subprocess
+                        linkAppNameDict[appName].kill()
 
-                    # Remove output.txt file
-                    subprocess.Popen("rm output.txt", shell=True)
-                    print (f"\u001b[33;1m +++ output file removed \u001b[0m")
-                except Exception as e:
-                    print (f"\u001b[33;1m --- something went wrong \u001b[32m")
-
+                        # Remove output.txt file
+                        subprocess.Popen("rm output.txt", shell=True)
+                        print (f"\u001b[33;1m +++ output file removed \u001b[0m")
+                    except Exception as e:
+                        print (f"\u001b[33;1m --- something went wrong \u001b[32m")
+        except Exception as e:
+            print('exception has been occured', e)
 
 
 #function for chunk the links app array
@@ -61,29 +63,6 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict):
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
-async def checkVersions():
-    file = open('manifest.json')
-    data = json.load(file)
-    version = data['version']
-    manifestMajor = int(version.split()[0].split('.')[0])
-    name = data['name']
-    vtexLs()
-    sleep(3)
-    with open('ls.txt', 'r') as file:
-        lsFile = file.readlines()
-        for line in lsFile:
-            if name in line:
-                majorls = int(line.split()[1].split('.')[0])
-                if majorls > manifestMajor:
-                    ret_value = False
-                else:
-                    ret_value = True
-
-                return ret_value
-
-
-def vtexLs():
-    subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
 
 async def main():
     branchName = os.getenv('BRANCH_NAME')
@@ -121,7 +100,6 @@ async def main():
     pro.wait()
 
 
-
     ###  Get all changed apps and order them
     with open('changeList.txt', 'r', encoding='utf-8') as file:
         contents = file.read()
@@ -157,19 +135,16 @@ async def main():
                             
                             print("+++ Working directory ", currentDirectory + '/' + app)
                             preCheck = await checkVersions()
-                            print('check versions', preCheck)
-                            # preCheckProcess = Process(target= checkVersions)
-                            # preCheckProcess.start()
-                            # preCheckProcess.join()
-                            sleep(2)
-                            # Open sub process to link an app and write output into a log file
-                            pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
-                            
-                            sleep(3)
-                            print("+++ Process started: ", pro.pid)
+                            if preCheck:
+                                sleep(2)
+                                # Open sub process to link an app and write output into a log file
+                                pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
+                                
+                                sleep(3)
+                                print("+++ Process started: ", pro.pid)
 
-                            # Keep subprocess for future use
-                            linkAppNameDict[app] = pro
+                                # Keep subprocess for future use
+                                linkAppNameDict[app] = pro
 
                             sleep(3)
 
@@ -194,7 +169,6 @@ async def main():
                         linkSubProcess.join()
 
     print (u"\u001b[33;1m +++ Done linking \u001b[0m")      
-
 
 
 if __name__ == '__main__':
