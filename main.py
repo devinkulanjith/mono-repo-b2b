@@ -9,43 +9,9 @@ import yaml
 import json
 # from preChecks import *
 
-branchName = os.getenv('BRANCH_NAME')
-
-if branchName:
-    modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
-else:
-    branchNameProcess = subprocess.Popen('git branch --show-current',stdout=subprocess.PIPE, shell=True)
-    branchNameProcess.wait()
-    branch = re.sub('[^a-zA-Z \n\.]', '', str(branchNameProcess.communicate()[0]).split("'")[1])
-    modifiedBranchName = branch[:-1]
-
-
-linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
-subprocess.Popen( linkCommand, shell=True)
-
-# Wait 5s after creating the workspace
-sleep(5)
-
-currentDirectory = os.getcwd()
-
-# get the order of linking apps
-apps = open('president_order.txt','r')
-appListOrder = apps.readlines()
-
-# opened sub processes for linking apps
-linkAppNameDict = {}
-
-# processes list to read vtex link output
-processorsForLink = []
-
-# Changed apps
-appList =  []
-
-pro = subprocess.Popen("git diff --name-only master > changeList.txt", stdout= True, shell=True)
-pro.wait()
 
 ### Read vtex link output and terminate sub-processes
-def watchLinkAction(appName):
+def watchLinkAction(appName, currentDirectory, linkAppNameDict):
             
     # Go to working directory
     os.chdir(currentDirectory + "/" + appName)
@@ -95,27 +61,12 @@ def watchLinkAction(appName):
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
-###  Get all changed apps and order them
-with open('changeList.txt', 'r', encoding='utf-8') as file:
-    contents = file.read()
-    for app in appListOrder:
-        appName = app.replace('\n','')
-        result = contents.find(appName)
-        if result != -1:
-            appList.append(appName)
-
-# Remove changed files list
-p2 = subprocess.Popen("rm changeList.txt", stdout=False, shell=True)
-p2.wait()
-
-print('+++ Apps with changes: ',appList)
 def checkVersions():
     file = open('manifest.json')
     data = json.load(file)
     version = data['version']
     manifestMajor = int(version.split()[0].split('.')[0])
     name = data['name']
-    print('versions', version)
     vtexLs()
     sleep(3)
     with open('ls.txt', 'r') as file:
@@ -124,66 +75,126 @@ def checkVersions():
             if name in line:
                 majorls = int(line.split()[1].split('.')[0])
                 if majorls > manifestMajor:
-                    return False
+                    ret_value = False
                 else:
-                    return True
+                    ret_value = True
+
+                return ret_value
+
 
 def vtexLs():
     subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
 
-# Get apps linking order
-with open('order.yml', 'r') as file:
-    valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
-    
-    for key in valuesYaml:
-        sleep(3)
-        print (f"\u001b[33;1m +++ Starinting App link in {key} level \u001b[0m") 
-        sleep(5)
-        # If changed apps count > 0
-        if len(appList) != 0:
-            for group in chunker(valuesYaml[key], 2):
-                linkAppNameDict.clear()
-                for app in group:
-                    if app in appList:
+def main():
+    branchName = os.getenv('BRANCH_NAME')
 
-                        # go to current directory
-                        os.chdir(currentDirectory + '/' + app)
-                        
-                        print("+++ Working directory ", currentDirectory + '/' + app)
-                        preCheckProcess = Process(target= checkVersions)
-                        preCheckProcess.start()
-                        preCheckProcess.join()
-                        print('precheck process', preCheckProcess)
-                        sleep(2)
-                        # Open sub process to link an app and write output into a log file
-                        pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
-                        
-                        sleep(3)
-                        print("+++ Process started: ", pro.pid)
+    if branchName:
+        modifiedBranchName = re.sub('[^a-zA-Z \n\.]', '', branchName)
+    else:
+        branchNameProcess = subprocess.Popen('git branch --show-current',stdout=subprocess.PIPE, shell=True)
+        branchNameProcess.wait()
+        branch = re.sub('[^a-zA-Z \n\.]', '', str(branchNameProcess.communicate()[0]).split("'")[1])
+        modifiedBranchName = branch[:-1]
 
-                        # Keep subprocess for future use
-                        linkAppNameDict[app] = pro
 
-                        sleep(3)
+    linkCommand = f'echo "yes" | vtex use {modifiedBranchName}'
+    subprocess.Popen( linkCommand, shell=True)
 
-                print("+++ All sub processes: ", linkAppNameDict.keys())
+    # Wait 5s after creating the workspace
+    sleep(5)
 
-                # Create new processes to listen vtex link output logs
-                for app in group:
-                    if app in appList:
+    currentDirectory = os.getcwd()
 
-                        # create a new process
-                        linkProcess = Process(target= watchLinkAction, args=(app,))
-                        linkProcess.start()
-                        
-                        sleep(3)
-                        
-                        # Keep opened processes for future use
-                        processorsForLink.append(linkProcess)
+    # get the order of linking apps
+    apps = open('president_order.txt','r')
+    appListOrder = apps.readlines()
 
-                # Join previously opened processes
-                for linkSubProcess in processorsForLink:
-                    print("+++ Joining the process ", linkSubProcess.pid)
-                    linkSubProcess.join()
+    # opened sub processes for linking apps
+    linkAppNameDict = {}
 
-print (u"\u001b[33;1m +++ Done linking \u001b[0m")      
+    # processes list to read vtex link output
+    processorsForLink = []
+
+    # Changed apps
+    appList =  []
+    pro = subprocess.Popen("git diff --name-only master > changeList.txt", stdout= True, shell=True)
+    pro.wait()
+
+
+
+    ###  Get all changed apps and order them
+    with open('changeList.txt', 'r', encoding='utf-8') as file:
+        contents = file.read()
+        for app in appListOrder:
+            appName = app.replace('\n','')
+            result = contents.find(appName)
+            if result != -1:
+                appList.append(appName)
+
+    # Remove changed files list
+    p2 = subprocess.Popen("rm changeList.txt", stdout=False, shell=True)
+    p2.wait()
+
+    print('+++ Apps with changes: ',appList)
+
+    # Get apps linking order
+    with open('order.yml', 'r') as file:
+        valuesYaml = yaml.load(file, Loader=yaml.FullLoader)
+        
+        for key in valuesYaml:
+            sleep(3)
+            print (f"\u001b[33;1m +++ Starinting App link in {key} level \u001b[0m") 
+            sleep(5)
+            # If changed apps count > 0
+            if len(appList) != 0:
+                for group in chunker(valuesYaml[key], 2):
+                    linkAppNameDict.clear()
+                    for app in group:
+                        if app in appList:
+
+                            # go to current directory
+                            os.chdir(currentDirectory + '/' + app)
+                            
+                            print("+++ Working directory ", currentDirectory + '/' + app)
+                            # preCheckProcess = Process(target= checkVersions)
+                            # preCheckProcess.start()
+                            # preCheckProcess.join()
+                            sleep(2)
+                            # Open sub process to link an app and write output into a log file
+                            pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
+                            
+                            sleep(3)
+                            print("+++ Process started: ", pro.pid)
+
+                            # Keep subprocess for future use
+                            linkAppNameDict[app] = pro
+
+                            sleep(3)
+
+                    print("+++ All sub processes: ", linkAppNameDict.keys())
+
+                    # Create new processes to listen vtex link output logs
+                    for app in group:
+                        if app in appList:
+
+                            # create a new process
+                            linkProcess = Process(target= watchLinkAction, args=(app, currentDirectory, linkAppNameDict,))
+                            linkProcess.start()
+                            
+                            sleep(3)
+                            
+                            # Keep opened processes for future use
+                            processorsForLink.append(linkProcess)
+
+                    # Join previously opened processes
+                    for linkSubProcess in processorsForLink:
+                        print("+++ Joining the process ", linkSubProcess.pid)
+                        linkSubProcess.join()
+
+    print (u"\u001b[33;1m +++ Done linking \u001b[0m")      
+
+
+
+if __name__ == '__main__':
+    main()
+
