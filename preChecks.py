@@ -1,22 +1,30 @@
 import json
 import subprocess
+import time
 
-def checkVersions():
+async def checkVersions():
     file = open('manifest.json')
     data = json.load(file)
     version = data['version']
+    manifestMajor = int(version.split()[1].split('.')[0])
+    name = data['name']
     print('versions', version)
-
+    vtexLs()
+    time.sleep(3)
+    with open('ls.txt', 'r') as file:
+        lsFile = file.readlines()
+        for line in lsFile:
+            if name in line:
+                majorls = int(line.split()[1].split('.')[0])
+                if majorls > manifestMajor:
+                    return False
+                else:
+                    return True
 
 def vtexLs():
-    subprocess.Popen('vtex ls> ls.json',stdout=True, shell=True)
+    subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
 
 
 
-with open('ls.txt', 'r') as file:
-    tt = file.readlines()
-    for x in tt:
-        if 'cloudab2b.dealer-map' in x:
-            print('yes i do found')
-            print('major',x.split()[1].split('.')[0])
+
        

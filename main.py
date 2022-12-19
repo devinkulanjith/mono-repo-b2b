@@ -6,7 +6,6 @@ from signal import SIGKILL
 from os import kill
 import re
 import yaml
-from termcolor import colored
 from preChecks import *
 
 branchName = os.getenv('BRANCH_NAME')
@@ -129,10 +128,14 @@ with open('order.yml', 'r') as file:
                         os.chdir(currentDirectory + '/' + app)
                         
                         print("+++ Working directory ", currentDirectory + '/' + app)
-                        checkVersions()
+                        preCheckProcess = Process(target= checkVersions)
+                        preCheckProcess.start()
+                        preCheckProcess.join()
+                        print('precheck process', preCheckProcess)
+                        sleep(2)
                         # Open sub process to link an app and write output into a log file
                         pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
-
+                        
                         sleep(3)
                         print("+++ Process started: ", pro.pid)
 
