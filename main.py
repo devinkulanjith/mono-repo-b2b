@@ -7,6 +7,7 @@ from os import kill
 import re
 import yaml
 import json
+import asyncio
 
 
 ### Read vtex link output and terminate sub-processes
@@ -197,5 +198,5 @@ async def main():
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
 
