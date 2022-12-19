@@ -113,7 +113,7 @@ def checkVersions():
     file = open('manifest.json')
     data = json.load(file)
     version = data['version']
-    manifestMajor = int(version.split()[1].split('.')[0])
+    manifestMajor = int(version.split()[0].split('.')[0])
     name = data['name']
     print('versions', version)
     vtexLs()
