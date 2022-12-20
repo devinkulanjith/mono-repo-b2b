@@ -26,8 +26,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Install python pyyaml
         run: pip install pyyaml
-      - name: install term color
-        run: python3 -m pip install --upgrade termcolor
+      - name: install Process
+        run: pip install multiprocess
       - name: install yarn
         run: npm install --global yarn
       - name: yarn cache clean

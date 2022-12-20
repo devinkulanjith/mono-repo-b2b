@@ -10,8 +10,8 @@ async def checkVersions():
     name = data['name']
     vtexLs()
     time.sleep(3)
-    with open('ls.txt', 'r') as file:
-        lsFile = file.readlines()
+    with open('ls.txt', 'r') as f:
+        lsFile = f.readlines()
         for line in lsFile:
             if name in line:
                 majorls = int(line.split()[1].split('.')[0])
@@ -19,8 +19,15 @@ async def checkVersions():
                     ret_value = False
                 else:
                     ret_value = True
+            else:
+                ret_value = True
 
-                return ret_value
+        file.close()
+        f.close()
+        subprocess.Popen('rm ls.txt',stdout=True, shell=True)
+        return ret_value
+
+
 
 
 def vtexLs():

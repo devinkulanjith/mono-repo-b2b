@@ -1,14 +1,13 @@
 import subprocess
 import os
 from time import sleep
-from multiprocessing import Process
+from multiprocess import Process
 from signal import SIGKILL
 from os import kill
 import re
 import yaml
 from preChecks import *
 import asyncio
-
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName, currentDirectory, linkAppNameDict):
@@ -56,6 +55,7 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict):
                         print (f"\u001b[33;1m --- something went wrong \u001b[32m")
         except Exception as e:
             print('exception has been occured', e)
+            linkAppNameDict[appName].kill()
 
 
 #function for chunk the links app array
@@ -136,7 +136,7 @@ async def main():
                             print("+++ Working directory ", currentDirectory + '/' + app)
                             preCheck = await checkVersions()
                             if preCheck:
-                                sleep(2)
+                    
                                 # Open sub process to link an app and write output into a log file
                                 pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
                                 
