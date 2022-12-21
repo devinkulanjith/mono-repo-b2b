@@ -14,12 +14,14 @@ def systemSelector():
     nonWindowsCommands = {
         "removeOutput": "rm output.txt" ,
         "removeChangeList": "rm changeList.txt",
-        "removeLs": "rm ls.txt"
+        "removeLs": "rm ls.txt",
+        "slash": "/"
     }
     windowsCommands = {
         "removeOutput": "del output.txt" ,
         "removeChangeList": "del changeList.txt",
-        "removeLs": "del ls.txt"
+        "removeLs": "del ls.txt",
+        "slash": "\\"
     }
 
     if system == 'Windows':
