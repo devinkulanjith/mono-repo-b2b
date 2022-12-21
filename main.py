@@ -7,9 +7,29 @@ import re
 import yaml
 from preChecks import *
 import asyncio
+import platform
+
+def systemSelector():
+    system = platform.uname().system
+    nonWindowsCommands = {
+        "removeOutput": "rm output.txt" ,
+        "removeChangeList": "rm changeList.txt",
+        "removeLs": "rm ls.txt"
+    }
+    windowsCommands = {
+        "removeOutput": "del output.txt" ,
+        "removeChangeList": "del changeList.txt",
+        "removeLs": "del ls.txt"
+    }
+
+    if system == 'Windows':
+        return windowsCommands
+    else:
+        return nonWindowsCommands
+
 
 ### Read vtex link output and terminate sub-processes
-def watchLinkAction(appName, currentDirectory, linkAppNameDict):
+def watchLinkAction(appName, currentDirectory, linkAppNameDict, commands):
             
     # Go to working directory
     os.chdir(currentDirectory + "/" + appName)
@@ -48,7 +68,7 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict):
                         linkAppNameDict[appName].kill()
 
                         # Remove output.txt file
-                        subprocess.Popen("rm output.txt", shell=True)
+                        subprocess.Popen(commands["removeOutput"], shell=True)
                         print (f"\u001b[33;1m +++ output file removed \u001b[0m")
                     except Exception as e:
                         print (f"\u001b[33;1m --- something went wrong \u001b[32m")
@@ -98,7 +118,7 @@ async def main():
     pro = subprocess.Popen("git diff --name-only master > changeList.txt", stdout= True, shell=True)
     pro.wait()
 
-
+    commands = systemSelector()
     ###  Get all changed apps and order them
     with open('changeList.txt', 'r', encoding='utf-8') as file:
         contents = file.read()
@@ -109,7 +129,7 @@ async def main():
                 appList.append(appName)
 
     # Remove changed files list
-    p2 = subprocess.Popen("rm changeList.txt", stdout=False, shell=True)
+    p2 = subprocess.Popen(commands["removeChangeList"], stdout=False, shell=True)
     p2.wait()
 
     print('+++ Apps with changes: ',appList)
@@ -133,7 +153,7 @@ async def main():
                             os.chdir(currentDirectory + '/' + app)
                             
                             print("+++ Working directory ", currentDirectory + '/' + app)
-                            preCheck = await checkVersions()
+                            preCheck = await checkVersions(commands)
                             if preCheck:
                     
                                 # Open sub process to link an app and write output into a log file
@@ -154,7 +174,7 @@ async def main():
                         if app in appList:
 
                             # create a new process
-                            linkProcess = Process(target= watchLinkAction, args=(app, currentDirectory, linkAppNameDict,))
+                            linkProcess = Process(target= watchLinkAction, args=(app, currentDirectory, linkAppNameDict, commands,))
                             linkProcess.start()
                             
                             sleep(3)

@@ -2,7 +2,7 @@ import json
 import subprocess
 import time
 
-async def checkVersions():
+async def checkVersions(commands):
     file = open('manifest.json')
     data = json.load(file)
     version = data['version']
@@ -22,7 +22,7 @@ async def checkVersions():
 
         file.close()
         f.close()
-        subprocess.Popen('rm ls.txt',stdout=True, shell=True)
+        subprocess.Popen(commands["removeLs"],stdout=True, shell=True)
         time.sleep(2)
         return ret_value
 
