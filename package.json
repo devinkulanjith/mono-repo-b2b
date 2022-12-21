@@ -4,8 +4,7 @@
   "description": "Perform login for VTEX Toolbelt using supplied credentials",
   "type": "module",
   "main": "lib/main.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/actions/typescript-action.git"

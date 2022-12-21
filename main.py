@@ -2,7 +2,6 @@ import subprocess
 import os
 from time import sleep
 from multiprocess import Process
-from signal import SIGKILL
 from os import kill
 import re
 import yaml
