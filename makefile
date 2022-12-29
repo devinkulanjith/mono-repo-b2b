@@ -1,5 +1,8 @@
 linkapps: 
-	    npm install && ts-node main.ts && python3 main.py
+	    npm install && tsc main.ts && python main.py
 	
 clean:
 	rm -rf __pycache__
+
+cleanWindows:
+	RD __pycache__
