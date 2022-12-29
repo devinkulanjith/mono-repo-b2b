@@ -3,3 +3,6 @@ linkapps:
 	
 clean:
 	rm -rf __pycache__
+
+cleanWindows:
+	RD __pycache__
