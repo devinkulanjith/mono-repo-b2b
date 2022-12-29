@@ -161,6 +161,12 @@ async def main():
                             
                             print("+++ Working directory ", currentDirectory + commands["slash"] + app)
                             preCheck = await checkVersions(commands)
+                            outputFilePath = currentDirectory + commands["slash"] + app + commands["slash"] + "output.txt"
+
+                            if os.path.exists(outputFilePath):
+                                os.remove("output.txt")
+                                sleep(2)
+
                             if preCheck:
                     
                                 # Open sub process to link an app and write output into a log file
