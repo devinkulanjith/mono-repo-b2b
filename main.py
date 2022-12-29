@@ -15,7 +15,7 @@ def systemSelector():
         "removeOutput": "rm output.txt" ,
         "removeChangeList": "rm changeList.txt",
         "removeLs": "rm ls.txt",
-        "slash": "/"
+        "slash": "/",
     }
     windowsCommands = {
         "removeOutput": "del /f output.txt" ,
