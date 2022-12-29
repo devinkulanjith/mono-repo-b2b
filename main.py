@@ -14,12 +14,14 @@ def systemSelector():
     nonWindowsCommands = {
         "removeOutput": "rm output.txt" ,
         "removeChangeList": "rm changeList.txt",
-        "removeLs": "rm ls.txt"
+        "removeLs": "rm ls.txt",
+        "slash": "/"
     }
     windowsCommands = {
-        "removeOutput": "del output.txt" ,
-        "removeChangeList": "del changeList.txt",
-        "removeLs": "del ls.txt"
+        "removeOutput": "del /f output.txt" ,
+        "removeChangeList": "del /f changeList.txt",
+        "removeLs": "del /f ls.txt",
+        "slash": "\\"
     }
 
     if system == 'Windows':
@@ -30,11 +32,10 @@ def systemSelector():
 
 ### Read vtex link output and terminate sub-processes
 def watchLinkAction(appName, currentDirectory, linkAppNameDict, commands):
-            
     # Go to working directory
-    os.chdir(currentDirectory + "/" + appName)
+    os.chdir(currentDirectory + commands["slash"] + appName)
 
-    print("+++ Ready to read log file in ", currentDirectory + "/" + appName)
+    print("+++ Ready to read log file in ", currentDirectory + commands["slash"] + appName)
     
     var = True
     sleep(3)
@@ -56,7 +57,8 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict, commands):
             
                 # If log file contains link success message
                 if result != -1:
-                    
+                    file.close()
+                    sleep(2)
                     print (f"\u001b[33;1m +++ Matched result for:  {appName} result: {result}\u001b[0m")
                     var = False
                     
@@ -64,14 +66,19 @@ def watchLinkAction(appName, currentDirectory, linkAppNameDict, commands):
                     
                     try:
                         print (f"\u001b[33;1m +++ App will be killed {appName} \u001b[0m")
-                        # Kill file linking subprocess
-                        linkAppNameDict[appName].kill()
+                        processPid = linkAppNameDict[appName]
+                        if platform.uname().system == 'Windows':
+                            killPro = subprocess.Popen(f"taskkill /PID {processPid.pid} /F")
+                            killPro.wait()
 
-                        # Remove output.txt file
-                        subprocess.Popen(commands["removeOutput"], shell=True)
-                        print (f"\u001b[33;1m +++ output file removed \u001b[0m")
+                        else :
+                            linkAppNameDict[appName].kill()
+                        
+                        removeProcess= subprocess.Popen(commands["removeOutput"], stdout=True, shell=True)
+                        removeProcess.wait()
+                        print ("\u001b[33;1m +++ output file removed \u001b[0m")
                     except Exception as e:
-                        print (f"\u001b[33;1m --- something went wrong \u001b[32m")
+                        print ("\u001b[33;1m --- something went wrong \u001b[32m", e)
         except Exception as e:
             print('exception has been occured', e)
             linkAppNameDict[appName].kill()
@@ -150,15 +157,14 @@ async def main():
                         if app in appList:
 
                             # go to current directory
-                            os.chdir(currentDirectory + '/' + app)
+                            os.chdir(currentDirectory + commands["slash"] + app)
                             
-                            print("+++ Working directory ", currentDirectory + '/' + app)
+                            print("+++ Working directory ", currentDirectory + commands["slash"] + app)
                             preCheck = await checkVersions(commands)
                             if preCheck:
                     
                                 # Open sub process to link an app and write output into a log file
                                 pro = subprocess.Popen("echo 'yes' |vtex link > output.txt",stdout=True, shell=True)
-                                
                                 sleep(3)
                                 print("+++ Process started: ", pro.pid)
 

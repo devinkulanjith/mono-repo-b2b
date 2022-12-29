@@ -30,8 +30,8 @@ async def checkVersions(commands):
 
 
 def vtexLs():
-    subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
-
+    pro = subprocess.Popen('vtex ls> ls.txt',stdout=True, shell=True)
+    pro.wait()
 
 
 
